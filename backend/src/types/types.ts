@@ -22,7 +22,7 @@ export interface PendingUserData {
 }
 
 export interface otpSchemaModel {
-  email: string;
+  email?: string;
   otp: string;
   expiresAt: Date;
   attempts: number;

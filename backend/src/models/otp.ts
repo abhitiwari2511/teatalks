@@ -27,7 +27,6 @@ const otpSchema = new Schema<otpSchemaModel>(
   {
     email: {
       type: String,
-      required: true,
       trim: true,
       lowercase: true,
       index: true,

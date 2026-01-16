@@ -54,12 +54,8 @@ userSchema.methods.isPasswordMatched = async function (password: string) {
 
 userSchema.methods.generateAccessToken = function () {
   const jwtSecret = process.env.JWT_SECRET;
-  const jwtExpiry = process.env.JWT_EXPIRY;
   if (!jwtSecret) {
     throw new Error("JWT_SECRET is not defined in environment variables");
-  }
-  if (!jwtExpiry) {
-    throw new Error("JWT_EXPIRY is not defined in environment variables");
   }
   return jwt.sign(
     {
@@ -75,15 +71,9 @@ userSchema.methods.generateAccessToken = function () {
 
 userSchema.methods.generateRefreshToken = function () {
   const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-  const refreshTokenExpiry = process.env.REFRESH_TOKEN_EXPIRY;
   if (!refreshTokenSecret) {
     throw new Error(
       "REFRESH_TOKEN_SECRET is not defined in environment variables"
-    );
-  }
-  if (!refreshTokenExpiry) {
-    throw new Error(
-      "REFRESH_TOKEN_EXPIRY is not defined in environment variables"
     );
   }
   return jwt.sign(
