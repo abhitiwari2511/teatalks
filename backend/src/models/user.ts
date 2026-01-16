@@ -33,10 +33,6 @@ const userSchema = new Schema<userModelType, userMethods, UserModel>(
       trim: true,
       index: true,
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
     refreshToken: {
       type: String,
       default: null,

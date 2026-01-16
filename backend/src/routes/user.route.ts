@@ -1,10 +1,32 @@
-import { Router } from 'express';
-import { loginUser, logoutUser, registerUser } from '../controllers/users.js';
+import { Router } from "express";
+import {
+  getCurrentUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  registerUser,
+  verifyOTP,
+  resendOTP,
+} from "../controllers/users.js";
+import { verifyJWT } from "../middlewares/auth.js";
+import { validate } from "../middlewares/validate.js";
+import {
+  registerSchema,
+  loginSchema,
+  verifyOTPSchema,
+  resendOTPSchema,
+} from "../utils/zodSchema.js";
 
 const userRouter = Router();
 
-userRouter.route('/register').post(registerUser);
-userRouter.route('/login').post(loginUser);
-userRouter.route('/logout').post(logoutUser);
+userRouter.route("/register").post(validate(registerSchema), registerUser);
+userRouter.route("/verify-otp").post(validate(verifyOTPSchema), verifyOTP);
+userRouter.route("/resend-otp").post(validate(resendOTPSchema), resendOTP);
+userRouter.route("/login").post(validate(loginSchema), loginUser);
+userRouter.route("/refresh-token").post(refreshAccessToken);
+
+// secured routes
+userRouter.route("/logout").post(verifyJWT, logoutUser);
+userRouter.route("/me").get(verifyJWT, getCurrentUser);
 
 export default userRouter;
