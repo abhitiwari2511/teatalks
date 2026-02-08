@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
+import { motion } from "motion/react";
 
 const NavRegisterButton = () => {
   const router = useRouter();
@@ -55,4 +56,70 @@ const CtaRegisterButton = () => {
   );
 };
 
-export { CtaRegisterButton, HeroRegisterButton, NavRegisterButton };
+const LoginRegisterButton = () => {
+  const router = useRouter();
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full h-14 bg-accent text-foreground border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-accent"
+      onClick={() => router.push("/register")}
+    >
+      Create Account
+    </Button>
+  );
+};
+
+const LoginBackButton = () => {
+  const router = useRouter();
+  return (
+    <motion.button
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      onClick={() => router.push("/")}
+      className="fixed top-6 left-6 flex items-center gap-2 text-foreground hover:-translate-x-0.5 transition-transform z-50 bg-card border-4 border-border rounded-full px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+    >
+      <ArrowLeft className="w-5 h-5" />
+      <span className="italic">Back</span>
+    </motion.button>
+  );
+};
+
+const SignUpBackButton = () => {
+  const router = useRouter();
+  return (
+    <motion.button
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      onClick={() => router.push("/")}
+      className="fixed top-6 left-6 flex items-center gap-2 text-foreground hover:-translate-x-0.5 transition-transform z-50 bg-card border-4 border-border rounded-full px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+    >
+      <ArrowLeft className="w-5 h-5" />
+      <span className="italic">Back</span>
+    </motion.button>
+  );
+};
+
+const SignInButton = () => {
+  const router = useRouter();
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full h-12 bg-secondary text-foreground border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all italic hover:bg-secondary"
+      onClick={() => router.push("/login")}
+    >
+      Sign In
+    </Button>
+  );
+};
+
+export {
+  CtaRegisterButton,
+  HeroRegisterButton,
+  NavRegisterButton,
+  LoginRegisterButton,
+  LoginBackButton,
+  SignUpBackButton,
+  SignInButton,
+};

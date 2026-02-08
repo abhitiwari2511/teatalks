@@ -1,0 +1,319 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Label } from "./ui/label";
+import { Lock, Mail, ShieldCheck, User } from "lucide-react";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { motion } from "motion/react";
+import { SignInButton } from "./ClientSideButtons";
+
+const LoginForm = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Login with:", { email, password });
+    router.push("/home");
+  };
+
+  return (
+    <form onSubmit={handleLogin} className="space-y-6">
+      <div className="space-y-2">
+        <Label htmlFor="email" className="text-foreground italic">
+          College Email
+        </Label>
+        <div className="relative">
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@abc.ac.in"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="password" className="text-foreground italic">
+            Password
+          </Label>
+          <button
+            type="button"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors italic underline"
+          >
+            Forgot?
+          </button>
+        </div>
+        <div className="relative">
+          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+            required
+          />
+        </div>
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
+      >
+        LET&apos;S GO! 🚀
+      </Button>
+    </form>
+  );
+};
+
+const SignUpForm = () => {
+  const [step, setStep] = useState<"details" | "otp">("details");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [otp, setOtp] = useState("");
+
+  const handleSubmitDetails = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.email.endsWith("@abc.ac.in")) {
+      alert("Please use your college email (@abc.ac.in)");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+    setStep("otp");
+  };
+
+  const handleVerifyOtp = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Verify OTP:", otp);
+  };
+  return (
+    <div>
+      {" "}
+      <div className="text-center mb-8">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{
+            scale: 1,
+            rotate: step === "details" ? [0, -10, 10, 0] : 0,
+          }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="w-20 h-20 bg-accent rounded-full border-4 border-border flex items-center justify-center mx-auto mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-4xl"
+        >
+          {step === "details" ? "🎓" : "✉️"}
+        </motion.div>
+        <h1 className="text-4xl mb-2 text-foreground italic">
+          {step === "details" ? "Join the Circle!" : "Check Your Email"}
+        </h1>
+        <p className="text-muted-foreground">
+          {step === "details"
+            ? "Let's get you set up in 2 mins"
+            : `We sent a code to ${formData.email}`}
+        </p>
+      </div>
+      {/* Progress */}
+      <div className="flex items-center justify-center gap-2 mb-8">
+        <div
+          className={`w-12 h-12 rounded-full border-4 border-border flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+            step === "details"
+              ? "bg-primary text-primary-foreground"
+              : "bg-white text-foreground"
+          }`}
+        >
+          1
+        </div>
+        <div className="w-12 h-1 bg-border" />
+        <div
+          className={`w-12 h-12 rounded-full border-4 border-border flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+            step === "otp"
+              ? "bg-primary text-primary-foreground"
+              : "bg-white text-foreground"
+          }`}
+        >
+          2
+        </div>
+      </div>
+      {step === "details" ? (
+        <form onSubmit={handleSubmitDetails} className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="username" className="text-foreground italic">
+              Username
+            </Label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                id="username"
+                type="text"
+                placeholder="coolstudent123"
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-foreground italic">
+              College Email
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@abc.ac.in"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                required
+              />
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground italic">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Only @abc.ac.in emails allowed</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-foreground italic">
+              Password
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword" className="text-foreground italic">
+              Confirm Password
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    confirmPassword: e.target.value,
+                  })
+                }
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                required
+              />
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary mt-2"
+          >
+            CONTINUE →
+          </Button>
+        </form>
+      ) : (
+        <form onSubmit={handleVerifyOtp} className="space-y-6">
+          <div className="space-y-2">
+            <Label
+              htmlFor="otp"
+              className="text-foreground text-center block italic"
+            >
+              Enter 6-Digit Code
+            </Label>
+            <Input
+              id="otp"
+              type="text"
+              placeholder="000000"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="text-center text-3xl tracking-widest h-16 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+              maxLength={6}
+              required
+            />
+          </div>
+
+          <div className="space-y-3">
+            <Button
+              type="submit"
+              className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
+            >
+              VERIFY & JOIN! 🎉
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="w-full text-muted-foreground hover:text-foreground italic underline"
+              onClick={() => {
+                console.log("Resending OTP...");
+              }}
+            >
+              Didn&apos;t get it? Resend code
+            </Button>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all italic hover:bg-white"
+            onClick={() => setStep("details")}
+          >
+            ← Back
+          </Button>
+        </form>
+      )}
+      {step === "details" && (
+        <>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t-4 border-border border-dashed" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-card px-4 text-muted-foreground italic">
+                Already in?
+              </span>
+            </div>
+          </div>
+
+          {/* button signin */}
+          <SignInButton />
+        </>
+      )}
+    </div>
+  );
+};
+
+export { LoginForm, SignUpForm };
