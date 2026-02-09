@@ -27,6 +27,7 @@ const FeatureSection = () => {
         "Real-time updates. Blink and you might miss the next viral post.",
     },
   ];
+  
   return (
     <div>
       <div className="container mx-auto px-4 py-20">

@@ -1,11 +1,20 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock,
+  Flame,
+  LogOut,
+  Plus,
+  TrendingUp,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { motion } from "motion/react";
+import { useState } from "react";
 
-const NavRegisterButton = () => {
+const NavRegisterButton = () => { 
   const router = useRouter();
 
   return (
@@ -114,6 +123,73 @@ const SignInButton = () => {
   );
 };
 
+const HomeSearchButton = () => {
+  const router = useRouter();
+  return (
+    <Button
+      onClick={() => router.push("/")}
+      variant="outline"
+      size="icon"
+      className="border-4 border-border rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+    >
+      <LogOut className="w-5 h-5" />
+    </Button>
+  );
+};
+
+const HomeTabsButton = () => {
+  const [activeTab, setActiveTab] = useState("hot");
+  const tabs = [
+    { id: "hot", label: "🔥 Hot", icon: Flame },
+    { id: "new", label: "⚡ New", icon: Clock },
+    { id: "top", label: "📈 Top", icon: TrendingUp },
+  ];
+
+  return (
+    <div className="flex gap-3 overflow-x-auto pb-2">
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => setActiveTab(tab.id)}
+          className={`flex items-center gap-2 px-6 py-3 border-4 border-border rounded-full font-normal transition-all ${
+            activeTab === tab.id
+              ? "bg-accent text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              : "bg-card text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          }`}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const HomeCreatePostButton = () => {
+  const [showCreatePost, setShowCreatePost] = useState(false);
+  return (
+    <Button
+      onClick={() => setShowCreatePost(!showCreatePost)}
+      className="w-full bg-primary text-primary-foreground border-4 border-border rounded-2xl py-6 text-lg font-normal shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-primary"
+    >
+      <Plus className="w-5 h-5 mr-2" />
+      Create Post
+    </Button>
+  );
+};
+
+const HomeCancelButton = () => {
+  const [showCreatePost, setShowCreatePost] = useState(false);
+  return (
+    <Button
+      variant="outline"
+      onClick={() => setShowCreatePost(false)}
+      className="border-4 border-border rounded-full px-6 font-normal shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+    >
+      Cancel
+    </Button>
+  );
+};
+
 export {
   CtaRegisterButton,
   HeroRegisterButton,
@@ -122,4 +198,8 @@ export {
   LoginBackButton,
   SignUpBackButton,
   SignInButton,
+  HomeSearchButton,
+  HomeTabsButton,
+  HomeCreatePostButton,
+  HomeCancelButton,
 };

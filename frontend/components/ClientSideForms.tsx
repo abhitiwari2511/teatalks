@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Label } from "./ui/label";
-import { Lock, Mail, ShieldCheck, User } from "lucide-react";
+import { Lock, Mail, Send, ShieldCheck, User } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { motion } from "motion/react";
-import { SignInButton } from "./ClientSideButtons";
+import { HomeCancelButton, HomeCreatePostButton, SignInButton } from "./ClientSideButtons";
+import { Textarea } from "./ui/textarea";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -165,7 +166,7 @@ const SignUpForm = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })
                 }
-                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
                 required
               />
             </div>
@@ -185,7 +186,7 @@ const SignUpForm = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
                 required
               />
             </div>
@@ -316,4 +317,48 @@ const SignUpForm = () => {
   );
 };
 
-export { LoginForm, SignUpForm };
+const HomePageForm = () => {
+  const [newPost, setNewPost] = useState("");
+  const [showCreatePost, setShowCreatePost] = useState(false);
+
+  return (
+    <div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <HomeCreatePostButton />
+      </motion.div>
+
+      {/* Create Post Form */}
+      {showCreatePost && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="bg-card border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+        >
+          <h3 className="text-xl font-normal text-foreground mb-4">
+            What&apos;s on your mind?
+          </h3>
+          <Textarea
+            value={newPost}
+            onChange={(e) => setNewPost(e.target.value)}
+            placeholder="Spill the tea... (Be respectful though!)"
+            className="border-4 border-border rounded-xl mb-4 font-normal min-h-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 transition-all"
+          />
+          <div className="flex gap-3 justify-end">
+            <HomeCancelButton />
+            <Button className="bg-accent text-foreground border-4 border-border rounded-full px-6 font-normal shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-accent">
+              <Send className="w-4 h-4 mr-2" />
+              Post
+            </Button>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
+
+export { LoginForm, SignUpForm, HomePageForm };

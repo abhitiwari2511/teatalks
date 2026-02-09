@@ -1,5 +1,29 @@
 import * as motion from "motion/react-client";
 
+const dataTestimonials = [
+  {
+    name: "Priya S.",
+    role: "CS Senior",
+    text: "Finally found my people! Best decision ever joining TeaTalks 🔥",
+    avatar: "🧑‍💻",
+    color: "bg-secondary",
+  },
+  {
+    name: "Arjun M.",
+    role: "ECE Sophomore",
+    text: "From memes to study groups, everything I need is here. 10/10 would recommend",
+    avatar: "😎",
+    color: "bg-accent",
+  },
+  {
+    name: "Sneha K.",
+    role: "MBA Freshman",
+    text: "The group chat we all needed but didn't know about. Life saver during exams!",
+    avatar: "📚",
+    color: "bg-[#FFE66D]",
+  },
+];
+
 const Testimonials = () => {
   return (
     <div>
@@ -15,29 +39,7 @@ const Testimonials = () => {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                name: "Priya S.",
-                role: "CS Senior",
-                text: "Finally found my people! Best decision ever joining TeaTalks 🔥",
-                avatar: "🧑‍💻",
-                color: "bg-secondary",
-              },
-              {
-                name: "Arjun M.",
-                role: "ECE Sophomore",
-                text: "From memes to study groups, everything I need is here. 10/10 would recommend",
-                avatar: "😎",
-                color: "bg-accent",
-              },
-              {
-                name: "Sneha K.",
-                role: "MBA Freshman",
-                text: "The group chat we all needed but didn't know about. Life saver during exams!",
-                avatar: "📚",
-                color: "bg-[#FFE66D]",
-              },
-            ].map((testimonial, index) => (
+            {dataTestimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
