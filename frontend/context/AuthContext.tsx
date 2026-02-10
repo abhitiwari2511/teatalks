@@ -1,6 +1,15 @@
-import { register, login, verifyOTP, logout, me, resendOTP } from "@/lib/api/auth";
+"use client";
+
 import {
-    AuthContextType,
+  register,
+  login,
+  verifyOTP,
+  logout,
+  me,
+  resendOTP,
+} from "@/lib/api/auth";
+import {
+  AuthContextType,
   LoginUser,
   RegisterUser,
   ResendOTP,
@@ -52,8 +61,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setError("Login failed. Please try again.");
         setLoading(false);
         return;
-    }
-    setUser(response.data.user);
+      }
+      setUser(response.data.user);
     } catch (error: unknown) {
       const errorMessage =
         (error as AxiosError<{ message: string }>).response?.data?.message ||
@@ -97,12 +106,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const getCurrentUser = async () => {
     setLoading(true);
     try {
-        const response = await me();
-        if (response.data) {
-          setUser(response.data);
-        } else {
-          setUser(null);
-        }
+      const response = await me();
+      if (response.data) {
+        setUser(response.data);
+      } else {
+        setUser(null);
+      }
     } catch (error: unknown) {
       const errorMessage =
         (error as AxiosError<{ message: string }>).response?.data?.message ||
@@ -117,10 +126,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
     setError(null);
     try {
-        const response = await resendOTP(data);
-        if (!response.data) {
-          setError("Resend OTP failed. Please try again.");
-        }
+      const response = await resendOTP(data);
+      if (!response.data) {
+        setError("Resend OTP failed. Please try again.");
+      }
     } catch (error: unknown) {
       const errorMessage =
         (error as AxiosError<{ message: string }>).response?.data?.message ||
@@ -132,8 +141,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-  getCurrentUser();
-}, []);
+    getCurrentUser();
+  }, []);
 
   const value: AuthContextType = {
     user,
@@ -146,7 +155,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     resendOTP: resendUserOTP,
     getCurrentUser,
     logout: logoutUser,
-  }
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

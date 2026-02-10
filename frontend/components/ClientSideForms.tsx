@@ -7,22 +7,39 @@ import { Lock, Mail, Send, ShieldCheck, User } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { motion } from "motion/react";
-import { HomeCancelButton, HomeCreatePostButton, SignInButton } from "./ClientSideButtons";
+import {
+  HomeCancelButton,
+  HomeCreatePostButton,
+  SignInButton,
+} from "./ClientSideButtons";
 import { Textarea } from "./ui/textarea";
+import { useAuth } from "@/hooks/useAuth";
+import { usePosts } from "@/hooks/usePosts";
 
 const LoginForm = () => {
   const router = useRouter();
+  const { login, loading, error } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login with:", { email, password });
-    router.push("/home");
+    try {
+      await login({ email, password });
+      router.push("/home");
+    } catch (error: unknown) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
     <form onSubmit={handleLogin} className="space-y-6">
+      {error && (
+        <div className="bg-destructive/10 border-4 border-destructive text-destructive rounded-2xl p-4 italic">
+          {error}
+        </div>
+      )}
       <div className="space-y-2">
         <Label htmlFor="email" className="text-foreground italic">
           College Email
@@ -32,6 +49,7 @@ const LoginForm = () => {
           <Input
             id="email"
             type="email"
+            disabled={loading}
             placeholder="you@abc.ac.in"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -58,6 +76,7 @@ const LoginForm = () => {
           <Input
             id="password"
             type="password"
+            disabled={loading}
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -69,40 +88,64 @@ const LoginForm = () => {
 
       <Button
         type="submit"
+        disabled={loading}
         className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
       >
-        LET&apos;S GO! 🚀
+        {loading ? "Logging in..." : "LET'S GO! 🚀"}
       </Button>
     </form>
   );
 };
 
 const SignUpForm = () => {
+  const router = useRouter();
+  const { register, loading, error, verifyOTP, resendOTP } = useAuth();
   const [step, setStep] = useState<"details" | "otp">("details");
   const [formData, setFormData] = useState({
+    fullName: "",
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const [otp, setOtp] = useState("");
 
-  const handleSubmitDetails = (e: React.FormEvent) => {
+  const handleSubmitDetails = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.email.endsWith("@abc.ac.in")) {
-      alert("Please use your college email (@abc.ac.in)");
+
+    if (!formData.email.endsWith("@hmritm.ac.in")) {
+      alert("Please use your college email (@hmritm.ac.in)");
       return;
     }
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match");
-      return;
+
+    try {
+      await register({
+        fullName: formData.fullName,
+        userName: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+      setStep("otp");
+    } catch (error: unknown) {
+      console.log("Error during registration:", error);
     }
-    setStep("otp");
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Verify OTP:", otp);
+    try {
+      await verifyOTP({ email: formData.email, otp });
+      router.push("/home");
+    } catch (error: unknown) {
+      console.error("OTP verification failed:", error);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    try {
+      await resendOTP({ email: formData.email });
+    } catch (error: unknown) {
+      console.error("Failed to resend OTP:", error);
+    }
   };
   return (
     <div>
@@ -128,7 +171,6 @@ const SignUpForm = () => {
             : `We sent a code to ${formData.email}`}
         </p>
       </div>
-      {/* Progress */}
       <div className="flex items-center justify-center gap-2 mb-8">
         <div
           className={`w-12 h-12 rounded-full border-4 border-border flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
@@ -152,6 +194,32 @@ const SignUpForm = () => {
       </div>
       {step === "details" ? (
         <form onSubmit={handleSubmitDetails} className="space-y-5">
+          {error && (
+            <div className="bg-destructive/10 border-4 border-destructive text-destructive rounded-2xl p-4 italic">
+              {error}
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label htmlFor="fullName" className="text-foreground italic">
+              Full Name
+            </Label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                id="fullName"
+                type="text"
+                disabled={loading}
+                placeholder="John Doe"
+                value={formData.fullName}
+                onChange={(e) =>
+                  setFormData({ ...formData, fullName: e.target.value })
+                }
+                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
+                required
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="username" className="text-foreground italic">
               Username
@@ -161,6 +229,7 @@ const SignUpForm = () => {
               <Input
                 id="username"
                 type="text"
+                disabled={loading}
                 placeholder="coolstudent123"
                 value={formData.username}
                 onChange={(e) =>
@@ -181,6 +250,7 @@ const SignUpForm = () => {
               <Input
                 id="email"
                 type="email"
+                disabled={loading}
                 placeholder="you@abc.ac.in"
                 value={formData.email}
                 onChange={(e) =>
@@ -205,6 +275,7 @@ const SignUpForm = () => {
               <Input
                 id="password"
                 type="password"
+                disabled={loading}
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) =>
@@ -216,38 +287,21 @@ const SignUpForm = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword" className="text-foreground italic">
-              Confirm Password
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    confirmPassword: e.target.value,
-                  })
-                }
-                className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
-                required
-              />
-            </div>
-          </div>
-
           <Button
             type="submit"
+            disabled={loading}
             className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary mt-2"
           >
-            CONTINUE →
+            {loading ? "SENDING OTP..." : "CONTINUE →"}
           </Button>
         </form>
       ) : (
         <form onSubmit={handleVerifyOtp} className="space-y-6">
+          {error && (
+            <div className="bg-destructive/10 border-4 border-destructive text-destructive rounded-2xl p-4 italic">
+              {error}
+            </div>
+          )}
           <div className="space-y-2">
             <Label
               htmlFor="otp"
@@ -258,6 +312,7 @@ const SignUpForm = () => {
             <Input
               id="otp"
               type="text"
+              disabled={loading}
               placeholder="000000"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
@@ -270,17 +325,17 @@ const SignUpForm = () => {
           <div className="space-y-3">
             <Button
               type="submit"
+              disabled={loading}
               className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
             >
-              VERIFY & JOIN! 🎉
+              {loading ? "VERIFYING..." : "VERIFY & JOIN! 🎉"}
             </Button>
             <Button
               type="button"
               variant="ghost"
+              disabled={loading}
               className="w-full text-muted-foreground hover:text-foreground italic underline"
-              onClick={() => {
-                console.log("Resending OTP...");
-              }}
+              onClick={handleResendOTP}
             >
               Didn&apos;t get it? Resend code
             </Button>
@@ -318,6 +373,7 @@ const SignUpForm = () => {
 };
 
 const HomePageForm = () => {
+  const { createUserPost, fetchPosts, fetchPostById, loading, error } = usePosts();
   const [newPost, setNewPost] = useState("");
   const [showCreatePost, setShowCreatePost] = useState(false);
 
@@ -359,6 +415,5 @@ const HomePageForm = () => {
     </div>
   );
 };
-
 
 export { LoginForm, SignUpForm, HomePageForm };
