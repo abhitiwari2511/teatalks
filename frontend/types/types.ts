@@ -54,3 +54,16 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  tempCredentials: { email: string; password: string } | null;
+  register: (data: RegisterUser) => Promise<void>;
+  login: (data: LoginUser) => Promise<void>;
+  verifyOTP: (data: VerifyOTP) => Promise<void>;
+  resendOTP: (data: ResendOTP) => Promise<void>;
+  getCurrentUser: () => Promise<void>;
+  logout: () => void;
+}
