@@ -14,7 +14,7 @@ import { Button } from "./ui/button";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-const NavRegisterButton = () => { 
+const NavRegisterButton = () => {
   const router = useRouter();
 
   return (
@@ -164,25 +164,23 @@ const HomeTabsButton = () => {
   );
 };
 
-const HomeCreatePostButton = () => {
-  const [showCreatePost, setShowCreatePost] = useState(false);
+const HomeCreatePostButton = ({ onClick, isOpen }: { onClick?: () => void; isOpen?: boolean }) => {
   return (
     <Button
-      onClick={() => setShowCreatePost(!showCreatePost)}
+      onClick={onClick}
       className="w-full bg-primary text-primary-foreground border-4 border-border rounded-2xl py-6 text-lg font-normal shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-primary"
     >
       <Plus className="w-5 h-5 mr-2" />
-      Create Post
+      {isOpen ? "Cancel" : "Create Post"}
     </Button>
   );
 };
 
-const HomeCancelButton = () => {
-  const [showCreatePost, setShowCreatePost] = useState(false);
+const HomeCancelButton = ({ onClick }: { onClick?: () => void }) => {
   return (
     <Button
       variant="outline"
-      onClick={() => setShowCreatePost(false)}
+      onClick={onClick}
       className="border-4 border-border rounded-full px-6 font-normal shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
     >
       Cancel

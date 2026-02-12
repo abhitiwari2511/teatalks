@@ -6,7 +6,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
     const token =
       req.header("Authorization")?.replace("Bearer ", "") ||
-      req.cookies?.accesstoken;
+      req.cookies?.accessToken;
 
     if (!token) {
       return res
@@ -22,7 +22,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     const decodedToken = jwt.verify(token, jwtSecret) as { _id: string };
 
     const user = await User.findById(decodedToken?._id).select(
-      "-password -refreshToken"
+      "-password -refreshToken",
     );
 
     if (!user) {

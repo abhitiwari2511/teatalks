@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect } from "react";
 import { Button } from "../ui/button";
 import {
   MessageSquare,
@@ -15,47 +15,13 @@ import {
 } from "lucide-react";
 import { HomeSearchButton, HomeTabsButton } from "../ClientSideButtons";
 import { HomePageForm } from "../ClientSideForms";
+import { usePosts } from "@/hooks/usePosts";
 
 export default function HomePage() {
-  // Mock data for posts
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: "priya_codes",
-      avatar: "🧑‍💻",
-      time: "2h ago",
-      title: "Just found out our CS prof postponed the exam!",
-      content:
-        "Finally some good news this semester 😭 Anyone else celebrating?",
-      upvotes: 234,
-      comments: 45,
-      reactions: ["🎉", "😭", "🔥"],
-    },
-    {
-      id: 2,
-      author: "campus_gossip",
-      avatar: "👀",
-      time: "4h ago",
-      title: "New cafe opening next to library tomorrow",
-      content:
-        "Finally a decent place for coffee that's not overpriced! They're giving 50% off on opening day 👀",
-      upvotes: 189,
-      comments: 32,
-      reactions: ["☕", "🎉", "😍"],
-    },
-    {
-      id: 3,
-      author: "meme_lord_420",
-      avatar: "😎",
-      time: "6h ago",
-      title: "When the prof says 'this will be on the exam'",
-      content:
-        "*insert panic meme* But seriously, anyone got notes from last week's lecture?",
-      upvotes: 567,
-      comments: 89,
-      reactions: ["😂", "💀", "📝"],
-    },
-  ]);
+  const { posts, loading, error, fetchPosts } = usePosts();
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background dark">
@@ -113,6 +79,26 @@ export default function HomePage() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        {loading && (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground italic">Loading posts...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-destructive/10 border-4 border-destructive text-destructive rounded-2xl p-4 italic mb-4">
+            {error}
+          </div>
+        )}
+
+        {!loading && !error && posts.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground italic">
+              No posts yet. Be the first! 🚀
+            </p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Feed */}
           <div className="lg:col-span-2 space-y-6">
@@ -124,9 +110,9 @@ export default function HomePage() {
 
             {/* Posts Feed */}
             <div className="space-y-6">
-              {posts.map((post, index) => (
+              {!loading && !error && posts.length > 0 && posts.map((post, index) => (
                 <motion.div
-                  key={post.id}
+                  key={post._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -135,15 +121,24 @@ export default function HomePage() {
                   {/* Post Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-secondary rounded-full border-4 border-border flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      {/* <div className="w-12 h-12 bg-secondary rounded-full border-4 border-border flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         {post.avatar}
-                      </div>
+                      </div> */}
                       <div>
                         <div className="font-normal text-foreground">
-                          @{post.author}
+                          @
+                          {typeof post.authorId === "string"
+                            ? "Unknown"
+                            : post.authorId.userName}
                         </div>
                         <div className="text-sm text-muted-foreground font-normal">
-                          {post.time}
+                          {new Date(post.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                            },
+                          )}
                         </div>
                       </div>
                     </div>
@@ -160,7 +155,7 @@ export default function HomePage() {
                   </div>
 
                   {/* Reactions */}
-                  <div className="flex items-center gap-2 mb-4">
+                  {/* <div className="flex items-center gap-2 mb-4">
                     {post.reactions.map((reaction, i) => (
                       <span
                         key={i}
@@ -169,10 +164,10 @@ export default function HomePage() {
                         {reaction}
                       </span>
                     ))}
-                  </div>
+                  </div> */}
 
                   {/* Post Actions */}
-                  <div className="flex items-center gap-4 pt-4 border-t-4 border-border">
+                  {/* <div className="flex items-center gap-4 pt-4 border-t-4 border-border">
                     <div className="flex items-center gap-2">
                       <Button
                         variant="outline"
@@ -206,7 +201,7 @@ export default function HomePage() {
                       <Share2 className="w-4 h-4 mr-1" />
                       Share
                     </Button>
-                  </div>
+                  </div> */}
                 </motion.div>
               ))}
             </div>
@@ -215,7 +210,7 @@ export default function HomePage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Trending Topics */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="bg-card border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
@@ -244,10 +239,10 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </motion.div> */}
 
             {/* Campus Communities */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
@@ -288,7 +283,7 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </motion.div> */}
 
             {/* Quick Stats */}
             <motion.div
@@ -301,9 +296,8 @@ export default function HomePage() {
                 You&apos;re doing great! 🎉
               </h3>
               <div className="space-y-2 text-foreground">
-                <p className="font-normal">📝 12 posts this week</p>
-                <p className="font-normal">💬 45 comments</p>
-                <p className="font-normal">⬆️ 234 upvotes received</p>
+                <p className="font-normal">📝 {posts.length} posts this week</p>
+                {/* <p className="font-normal">💬 45 comments</p> */}
               </div>
             </motion.div>
           </div>

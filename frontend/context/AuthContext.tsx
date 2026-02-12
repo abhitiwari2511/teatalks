@@ -116,7 +116,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const errorMessage =
         (error as AxiosError<{ message: string }>).response?.data?.message ||
         "Failed to fetch user data";
-      setError(errorMessage);
     } finally {
       setLoading(false);
     }

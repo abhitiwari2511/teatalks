@@ -126,7 +126,7 @@ const SignUpForm = () => {
       });
       setStep("otp");
     } catch (error: unknown) {
-      console.log("Error during registration:", error);
+      console.error("Error during registration:", error);
     }
   };
 
@@ -373,9 +373,22 @@ const SignUpForm = () => {
 };
 
 const HomePageForm = () => {
-  const { createUserPost, fetchPosts, fetchPostById, loading, error } = usePosts();
-  const [newPost, setNewPost] = useState("");
+  const { createUserPost, fetchPosts, loading } = usePosts();
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleCreatePost = async () => {
+    try {
+      await createUserPost({ title: title, content: content });
+      setTitle("");
+      setContent("");
+      setShowCreatePost(!showCreatePost);
+      await fetchPosts();
+    } catch (error) {
+      console.error("Failed to create post:", error);
+    }
+  };
 
   return (
     <div>
@@ -383,7 +396,10 @@ const HomePageForm = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <HomeCreatePostButton />
+        <HomeCreatePostButton
+          onClick={() => setShowCreatePost(!showCreatePost)}
+          isOpen={showCreatePost}
+        />
       </motion.div>
 
       {/* Create Post Form */}
@@ -397,15 +413,25 @@ const HomePageForm = () => {
           <h3 className="text-xl font-normal text-foreground mb-4">
             What&apos;s on your mind?
           </h3>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Spill the tea... (Be respectful though!)"
+            className="border-4 border-border rounded-xl mb-4 font-normal min-h-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 transition-all"
+          />
           <Textarea
-            value={newPost}
-            onChange={(e) => setNewPost(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             placeholder="Spill the tea... (Be respectful though!)"
             className="border-4 border-border rounded-xl mb-4 font-normal min-h-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 transition-all"
           />
           <div className="flex gap-3 justify-end">
-            <HomeCancelButton />
-            <Button className="bg-accent text-foreground border-4 border-border rounded-full px-6 font-normal shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-accent">
+            <HomeCancelButton onClick={() => setShowCreatePost(false)} />
+            <Button
+              onClick={handleCreatePost}
+              disabled={loading || title.trim() === "" || content.trim() === ""}
+              className="bg-accent text-foreground border-4 border-border rounded-full px-6 font-normal shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-accent"
+            >
               <Send className="w-4 h-4 mr-2" />
               Post
             </Button>
