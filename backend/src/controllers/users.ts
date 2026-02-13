@@ -9,6 +9,7 @@ import {
   OTP_MAX_ATTEMPTS,
 } from "../utils/otpHandler.js";
 import { sendOTPEmail } from "../utils/email.js";
+import { Post } from "../models/posts.js";
 
 const generateTokens = async (userId: string) => {
   try {
@@ -164,7 +165,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
   await OTP.deleteOne({ email: email.toLowerCase() });
 
   const createdUser = await User.findOne({ email: email.toLowerCase() }).select(
-    "-password -refreshToken"
+    "-password -refreshToken",
   );
 
   return res.status(201).json({
@@ -234,11 +235,11 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateTokens(
-    user._id.toString()
+    user._id.toString(),
   );
 
   const loggedInUser = await User.findById(user._id).select(
-    "-password -refreshToken"
+    "-password -refreshToken",
   );
 
   const cookieOptions = {
@@ -275,7 +276,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         refreshToken: 1,
       },
     },
-    { new: true }
+    { new: true },
   );
 
   const options = {
@@ -341,7 +342,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     };
 
     const { accessToken, refreshToken } = await generateTokens(
-      user._id.toString()
+      user._id.toString(),
     );
 
     return res
@@ -362,6 +363,39 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  if (!username) {
+    return res.status(400).json({
+      success: false,
+      message: "Username is required",
+    });
+  }
+
+  const user = await User.findOne({ userName: username }).select(
+    "-password -refreshToken"
+  );
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  const post = await Post.find({ authorId: user._id })
+    .sort({ createdAt: -1 })
+    .populate("authorId", "userName fullName");
+
+  return res.status(200).json({
+    success: true,
+    user: user,
+    posts: post,
+    postCount: post.length,
+  });
+});
+
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
@@ -378,4 +412,5 @@ export {
   logoutUser,
   refreshAccessToken,
   getCurrentUser,
+  getUserProfile,
 };

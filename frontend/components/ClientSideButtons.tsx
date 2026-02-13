@@ -123,7 +123,7 @@ const SignInButton = () => {
   );
 };
 
-const HomeSearchButton = () => {
+const HomeLogoutButton = () => {
   const router = useRouter();
   return (
     <Button
@@ -196,7 +196,7 @@ export {
   LoginBackButton,
   SignUpBackButton,
   SignInButton,
-  HomeSearchButton,
+  HomeLogoutButton,
   HomeTabsButton,
   HomeCreatePostButton,
   HomeCancelButton,

@@ -22,6 +22,8 @@ export const login = ({email, password}: LoginUser) => client.post("/users/login
     password
 });
 
+export const getUserProfile = (username: string) => client.get(`/users/profile/${username}`);
+
 export const logout = () => client.post("/users/logout");
 export const me = () => client.get("/users/me");
 export const refreshToken = () => client.post("/users/refresh-token");

@@ -9,11 +9,10 @@ import {
   ArrowBigUp,
   ArrowBigDown,
   Search,
-  Bell,
   User,
   Share2,
 } from "lucide-react";
-import { HomeSearchButton, HomeTabsButton } from "../ClientSideButtons";
+import { HomeLogoutButton, HomeTabsButton } from "../ClientSideButtons";
 import { HomePageForm } from "../ClientSideForms";
 import { usePosts } from "@/hooks/usePosts";
 
@@ -59,20 +58,14 @@ export default function HomePage() {
             {/* Actions */}
             <div className="flex items-center gap-3">
               <Button
-                variant="outline"
-                size="icon"
-                className="border-4 border-border rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
-              >
-                <Bell className="w-5 h-5" />
-              </Button>
-              <Button
+                onClick={() => alert("Notifications coming soon!")}
                 variant="outline"
                 size="icon"
                 className="border-4 border-border rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
               >
                 <User className="w-5 h-5" />
               </Button>
-              <HomeSearchButton />
+              <HomeLogoutButton />
             </div>
           </div>
         </div>
@@ -110,52 +103,55 @@ export default function HomePage() {
 
             {/* Posts Feed */}
             <div className="space-y-6">
-              {!loading && !error && posts.length > 0 && posts.map((post, index) => (
-                <motion.div
-                  key={post._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-card border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
-                >
-                  {/* Post Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      {/* <div className="w-12 h-12 bg-secondary rounded-full border-4 border-border flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              {!loading &&
+                !error &&
+                posts.length > 0 &&
+                posts.map((post, index) => (
+                  <motion.div
+                    key={post._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-card border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                  >
+                    {/* Post Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        {/* <div className="w-12 h-12 bg-secondary rounded-full border-4 border-border flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         {post.avatar}
                       </div> */}
-                      <div>
-                        <div className="font-normal text-foreground">
-                          @
-                          {typeof post.authorId === "string"
-                            ? "Unknown"
-                            : post.authorId.userName}
-                        </div>
-                        <div className="text-sm text-muted-foreground font-normal">
-                          {new Date(post.createdAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                            },
-                          )}
+                        <div>
+                          <div className="font-normal text-foreground">
+                            @
+                            {typeof post.authorId === "string"
+                              ? "Unknown"
+                              : post.authorId.userName}
+                          </div>
+                          <div className="text-sm text-muted-foreground font-normal">
+                            {new Date(post.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                              },
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Post Content */}
-                  <div className="mb-4">
-                    <h3 className="text-xl font-normal text-foreground mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-foreground font-normal">
-                      {post.content}
-                    </p>
-                  </div>
+                    {/* Post Content */}
+                    <div className="mb-4">
+                      <h3 className="text-xl font-normal text-foreground mb-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-foreground font-normal">
+                        {post.content}
+                      </p>
+                    </div>
 
-                  {/* Reactions */}
-                  {/* <div className="flex items-center gap-2 mb-4">
+                    {/* Reactions */}
+                    {/* <div className="flex items-center gap-2 mb-4">
                     {post.reactions.map((reaction, i) => (
                       <span
                         key={i}
@@ -166,8 +162,8 @@ export default function HomePage() {
                     ))}
                   </div> */}
 
-                  {/* Post Actions */}
-                  {/* <div className="flex items-center gap-4 pt-4 border-t-4 border-border">
+                    {/* Post Actions */}
+                    {/* <div className="flex items-center gap-4 pt-4 border-t-4 border-border">
                     <div className="flex items-center gap-2">
                       <Button
                         variant="outline"
@@ -202,8 +198,8 @@ export default function HomePage() {
                       Share
                     </Button>
                   </div> */}
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
             </div>
           </div>
 
