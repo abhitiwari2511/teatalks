@@ -7,6 +7,8 @@ import {
   logout,
   me,
   resendOTP,
+  getUserProfile,
+  updateBio,
 } from "@/lib/api/auth";
 import {
   AuthContextType,
@@ -108,7 +110,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await me();
       if (response.data) {
-        setUser(response.data);
+        setUser(response.data.data);
       } else {
         setUser(null);
       }
@@ -116,6 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const errorMessage =
         (error as AxiosError<{ message: string }>).response?.data?.message ||
         "Failed to fetch user data";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -139,6 +142,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const userProfile = async (username: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await getUserProfile(username);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        (error as AxiosError<{ message: string }>).response?.data?.message ||
+        "Failed to fetch user profile";
+      setError(errorMessage);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateUserBio = async (bio: string) => {
+    setLoading(true);
+    
+    try {
+      const response = await updateBio(bio);
+      if (response.data) {
+        getCurrentUser();
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        (error as AxiosError<{ message: string }>).response?.data?.message ||
+        "Failed to update bio";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getCurrentUser();
   }, []);
@@ -154,6 +192,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     resendOTP: resendUserOTP,
     getCurrentUser,
     logout: logoutUser,
+    getUserProfile: userProfile,
+    updateBio: updateUserBio,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

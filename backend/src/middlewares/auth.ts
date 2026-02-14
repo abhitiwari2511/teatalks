@@ -9,9 +9,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
       req.cookies?.accessToken;
 
     if (!token) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: No token provided" });
+      return res.status(401).json({ message: "Unauthorized: Login Required" });
     }
 
     const jwtSecret = process.env.JWT_SECRET;

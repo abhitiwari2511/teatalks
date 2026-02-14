@@ -64,12 +64,6 @@ const LoginForm = () => {
           <Label htmlFor="password" className="text-foreground italic">
             Password
           </Label>
-          <button
-            type="button"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors italic underline"
-          >
-            Forgot?
-          </button>
         </div>
         <div className="relative">
           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -89,7 +83,7 @@ const LoginForm = () => {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
+        className="w-full cursor-pointer h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
       >
         {loading ? "Logging in..." : "LET'S GO! 🚀"}
       </Button>
@@ -251,7 +245,7 @@ const SignUpForm = () => {
                 id="email"
                 type="email"
                 disabled={loading}
-                placeholder="you@abc.ac.in"
+                placeholder="you@hmritm.ac.in"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
@@ -290,7 +284,7 @@ const SignUpForm = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary mt-2"
+            className="w-full cursor-pointer h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary mt-2"
           >
             {loading ? "SENDING OTP..." : "CONTINUE →"}
           </Button>

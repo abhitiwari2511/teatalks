@@ -7,9 +7,11 @@ import {
 export const useComments = () => {
   const createPostComment = async (postId: string, content: string) => {
     try {
-      await createComment({ postId, content });
+      const response = await createComment({ postId, content });
+      return response.data.data; // Return the created comment
     } catch (error) {
       console.log("Error while creating the comment", error);
+      throw error;
     }
   };
 
@@ -18,6 +20,7 @@ export const useComments = () => {
       await deleteComment(commentId);
     } catch (error) {
       console.log("Error while deleting the comment", error);
+      throw error;
     }
   };
 

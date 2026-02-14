@@ -28,6 +28,10 @@ const createComment = asyncHandler(async (req, res) => {
     postId: postId as string,
   });
 
+  await Post.findByIdAndUpdate(postId, {
+    $inc: { commentCount: 1 },
+  });
+
   return res.status(201).json({ success: true, data: newComment });
 });
 
@@ -75,6 +79,10 @@ const deleteComment = asyncHandler(async (req, res) => {
   }
 
   await Comment.findByIdAndDelete(commentId);
+
+  await Post.findByIdAndUpdate(comments.postId, {
+    $inc: { commentCount: -1 },
+  });
 
   return res
     .status(200)

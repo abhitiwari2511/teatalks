@@ -35,6 +35,13 @@ export interface Post {
   title: string;
   content: string;
   authorId: string | PostAuthor;
+  commentCount?: number;
+  reactionCount?: {
+    like: number;
+    love: number;
+    funny: number;
+    angry: number;
+  };
   createdAt: string;
   updatedAt: string;
 }
@@ -51,6 +58,7 @@ export interface User {
   fullName: string;
   userName: string;
   email: string;
+  bio?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -66,4 +74,48 @@ export interface AuthContextType {
   resendOTP: (data: ResendOTP) => Promise<void>;
   getCurrentUser: () => Promise<void>;
   logout: () => void;
+  updateBio: (bio: string) => Promise<void>;
+  getUserProfile: (username: string) => Promise<UserProfileData | undefined>;
+}
+
+export interface Comment {
+  _id: string;
+  postId: string;
+  content: string;
+  authorId: string | PostAuthor;
+  reactionCount?: {
+    like: number;
+    love: number;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Reaction {
+  _id: string;
+  type: string;
+  userId: string | PostAuthor;
+  targetId: string;
+  targetType: "post" | "comment";
+  reactionType: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WeeklyActivity {
+  postsCreated: number;
+  commentsMade: number;
+}
+
+export interface UserProfileData {
+  success: boolean;
+  user: User;
+  posts: Post[];
+  postCount: number;
+  commentCount: number;
+  weeklyActivity: WeeklyActivity;
+}
+
+export interface UserProfile {
+  username: string;
 }

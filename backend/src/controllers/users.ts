@@ -10,6 +10,7 @@ import {
 } from "../utils/otpHandler.js";
 import { sendOTPEmail } from "../utils/email.js";
 import { Post } from "../models/posts.js";
+import { Comment } from "../models/comments.js";
 
 const generateTokens = async (userId: string) => {
   try {
@@ -374,7 +375,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({ userName: username }).select(
-    "-password -refreshToken"
+    "-password -refreshToken",
   );
 
   if (!user) {
@@ -388,11 +389,31 @@ const getUserProfile = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate("authorId", "userName fullName");
 
+  const commentCount = await Comment.countDocuments({ authorId: user._id });
+
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const weeklyPostsCount = await Post.countDocuments({
+    authorId: user._id,
+    createdAt: { $gte: oneWeekAgo },
+  });
+
+  const weeklyCommentsCount = await Comment.countDocuments({
+    authorId: user._id,
+    createdAt: { $gte: oneWeekAgo },
+  });
+
   return res.status(200).json({
     success: true,
     user: user,
     posts: post,
     postCount: post.length,
+    commentCount: commentCount,
+    weeklyActivity: {
+      postsCreated: weeklyPostsCount,
+      commentsMade: weeklyCommentsCount,
+    },
   });
 });
 
@@ -401,6 +422,36 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     success: true,
     user: req.user,
     message: "User fetched successfully",
+  });
+});
+
+const updateBio = asyncHandler(async (req, res) => {
+  const { bio } = req.body;
+
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { bio },
+    { new: true, runValidators: true },
+  );
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    user,
+    message: "Bio updated successfully",
   });
 });
 
@@ -413,4 +464,5 @@ export {
   refreshAccessToken,
   getCurrentUser,
   getUserProfile,
+  updateBio
 };

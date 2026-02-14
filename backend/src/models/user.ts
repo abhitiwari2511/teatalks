@@ -37,6 +37,11 @@ const userSchema = new Schema<userModelType, userMethods, UserModel>(
       type: String,
       default: null,
     },
+    bio: {
+      type: String,
+      default: "",
+      trim: true,
+    },
   },
   { timestamps: true }
 );

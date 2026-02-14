@@ -4,9 +4,6 @@ import { COLLEGE_EMAIL_DOMAIN } from "../config/constants.js";
 const emailSchema = z
   .string()
   .email("Invalid email format")
-  .refine((email) => email.endsWith(`@${COLLEGE_EMAIL_DOMAIN}`), {
-    message: `Only @${COLLEGE_EMAIL_DOMAIN} emails are allowed`,
-  });
 
 const passwordSchema = z
   .string()

@@ -7,6 +7,7 @@ export interface userModelType {
   email: string;
   password: string;
   refreshToken: string;
+  bio?: string;
 }
 
 export interface userMethods {

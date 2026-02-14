@@ -8,6 +8,7 @@ import {
   verifyOTP,
   resendOTP,
   getUserProfile,
+  updateBio,
 } from "../controllers/users.js";
 import { verifyJWT } from "../middlewares/auth.js";
 import { validate } from "../middlewares/validate.js";
@@ -30,5 +31,6 @@ userRouter.route("/profile/:username").get(verifyJWT, getUserProfile);
 // secured routes
 userRouter.route("/logout").post(verifyJWT, logoutUser);
 userRouter.route("/me").get(verifyJWT, getCurrentUser);
+userRouter.route("/update-bio").patch(verifyJWT, updateBio);
 
 export default userRouter;

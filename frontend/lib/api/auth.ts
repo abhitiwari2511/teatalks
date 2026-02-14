@@ -27,3 +27,4 @@ export const getUserProfile = (username: string) => client.get(`/users/profile/$
 export const logout = () => client.post("/users/logout");
 export const me = () => client.get("/users/me");
 export const refreshToken = () => client.post("/users/refresh-token");
+export const updateBio = (bio: string) => client.patch("/users/update-bio", { bio });
