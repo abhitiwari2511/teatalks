@@ -256,7 +256,7 @@ const SignUpForm = () => {
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground italic">
               <ShieldCheck className="w-4 h-4" />
-              <span>Only @abc.ac.in emails allowed</span>
+              <span>Only @hmritm.ac.in emails allowed</span>
             </div>
           </div>
 
@@ -402,7 +402,7 @@ const HomePageForm = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          className="bg-card border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+          className="bg-card mt-5 border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
         >
           <h3 className="text-xl font-normal text-foreground mb-4">
             What&apos;s on your mind?
@@ -410,8 +410,8 @@ const HomePageForm = () => {
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Spill the tea... (Be respectful though!)"
-            className="border-4 border-border rounded-xl mb-4 font-normal min-h-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 transition-all"
+            placeholder="Tea title..."
+            className="border-4 border-border rounded-xl mb-4 font-normal min-h-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 transition-all"
           />
           <Textarea
             value={content}

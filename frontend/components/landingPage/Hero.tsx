@@ -1,10 +1,47 @@
+"use client";
+
 import { Flame } from "lucide-react";
-import * as motion from "motion/react-client"; 
+import { motion } from "motion/react";
 import { HeroRegisterButton } from "../ClientSideButtons";
+import { useEffect, useState } from "react";
+import { getPlatformStats } from "@/lib/api/auth";
+import { PlatformStats } from "@/types/types";
 
 const Hero = () => {
-  return <div>
-    <div className="container mx-auto px-4 py-16 md:py-24">
+  const [stats, setStats] = useState<PlatformStats>({
+    userCount: 2000,
+    postCount: 500,
+    commentCount: 0,
+    dailyPostCount: 50,
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await getPlatformStats();
+        if (response.data.success) {
+          setStats(response.data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch platform stats:", error);
+      }
+    };
+
+    fetchStats();
+    const interval = setInterval(fetchStats, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K+`;
+    }
+    return `${num}+`;
+  };
+
+  return (
+    <div>
+      <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -14,7 +51,7 @@ const Hero = () => {
             <div className="inline-block bg-secondary border-4 border-border rounded-full px-6 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-2">
               <span className="text-sm text-foreground italic flex items-center gap-2">
                 <Flame className="w-4 h-4" />
-                2000+ students already vibing
+                {formatNumber(stats.userCount)} students already vibing
               </span>
             </div>
           </motion.div>
@@ -39,7 +76,7 @@ const Hero = () => {
             className="text-xl md:text-2xl font-normal text-foreground mb-8 max-w-2xl mx-auto"
           >
             Say goodbye to 47 WhatsApp groups. This is THE place for campus
-            chaos, study groups, and everything in between.
+            chaos, study chats, and everything in between.
           </motion.p>
 
           <motion.div
@@ -61,9 +98,12 @@ const Hero = () => {
             className="grid grid-cols-3 gap-4 max-w-2xl mx-auto"
           >
             {[
-              { value: "2K+", label: "Students" },
-              { value: "500+", label: "Daily Posts" },
-              { value: "50+", label: "Communities" },
+              { value: formatNumber(stats.userCount), label: "Students" },
+              {
+                value: formatNumber(stats.dailyPostCount),
+                label: "Daily Posts",
+              },
+              { value: formatNumber(stats.commentCount), label: "Comments" },
             ].map((stat, index) => (
               <div
                 key={index}
@@ -80,7 +120,8 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
-  </div>;
+    </div>
+  );
 };
 
 export default Hero;

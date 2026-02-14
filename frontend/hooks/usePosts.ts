@@ -14,11 +14,11 @@ export const usePosts = () => {
     totalPosts: number;
   } | null>(null);
 
-  const fetchPosts = async (page?: number) => {
+  const fetchPosts = async (page: number = 1, limit: number = 10) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await getAllPosts();
+      const response = await getAllPosts(page, limit);
       setPosts(response.data.data);
       setPagination({
         page: response.data.page,

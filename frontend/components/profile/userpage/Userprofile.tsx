@@ -1,71 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import WeeklyActivityCard from "@/components/profile/WeeklyActivityCard";
 import ProfilePostCard from "@/components/profile/ProfilePostCard";
 import EditBioModal from "@/components/profile/EditBioModal";
-import { UserProfileData } from "@/types/types";
 import Header from "@/components/homePage/Header";
 
 const UserProfile = () => {
   const params = useParams();
   const router = useRouter();
-  const { user, getUserProfile, updateBio } = useAuth();
   const username = params.username as string;
 
-  const [profileData, setProfileData] = useState<UserProfileData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  const isOwnProfile = user?.userName === username;
-  
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!username) return;
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        const data = await getUserProfile(username);
-        if (data) {
-          setProfileData(data);
-        } else {
-          setError("User not found");
-        }
-      } catch (err) {
-        setError("Failed to load profile");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [username]);
-
-  const handleEditBio = () => {
-    setIsEditModalOpen(true);
-  };
-
-  const handleSaveBio = async (newBio: string) => {
-    try {
-      await updateBio(newBio);
-      const data = await getUserProfile(username);
-      if (data) {
-        setProfileData(data);
-      }
-      setIsEditModalOpen(false);
-    } catch (error) {
-      console.error("Failed to update bio:", error);
-      throw error;
-    }
-  };
+  const {
+    profileData,
+    loading,
+    error,
+    isOwnProfile,
+    isEditModalOpen,
+    handleEditBio,
+    handleSaveBio,
+    handleCloseModal,
+  } = useUserProfile(username);
 
   if (loading) {
     return (
@@ -158,7 +116,7 @@ const UserProfile = () => {
       {/* bio modal */}
       <EditBioModal
         isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
+        onClose={handleCloseModal}
         currentBio={profileData.user.bio || ""}
         onSave={handleSaveBio}
       />

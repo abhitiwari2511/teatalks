@@ -119,3 +119,27 @@ export interface UserProfileData {
 export interface UserProfile {
   username: string;
 }
+
+export interface CommentsCardProps {
+  comments: Comment[];
+  commentText: string;
+  isSubmitting: boolean;
+  userId: string | undefined;
+  commentReactionEmojis: Record<string, string>;
+  userCommentReactions: Record<string, string | null>; // commentId -> reactionType
+  onCommentTextChange: (text: string) => void;
+  onSubmitComment: () => void;
+  onDeleteComment: (commentId: string) => void;
+  onCommentReactionClick: (
+    commentId: string,
+    reactionType: "like" | "love",
+  ) => void;
+  formatDate: (date: string) => string;
+}
+
+export interface PlatformStats {
+  userCount: number;
+  postCount: number;
+  commentCount: number;
+  dailyPostCount: number;
+}

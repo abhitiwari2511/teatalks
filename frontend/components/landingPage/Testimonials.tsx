@@ -2,26 +2,26 @@ import * as motion from "motion/react-client";
 
 const dataTestimonials = [
   {
-    name: "Priya S.",
-    role: "CS Senior",
-    text: "Finally found my people! Best decision ever joining TeaTalks 🔥",
+    name: "Abhishek",
+    role: "IT Student",
+    text: "Good platform to meet and gossip with new people from the college 🔥",
     avatar: "🧑‍💻",
     color: "bg-secondary",
   },
   {
-    name: "Arjun M.",
-    role: "ECE Sophomore",
-    text: "From memes to study groups, everything I need is here. 10/10 would recommend",
+    name: "Arjun",
+    role: "CSE Sophomore",
+    text: "From memes to study chats, everything I need is here. 10/10 would recommend",
     avatar: "😎",
     color: "bg-accent",
   },
   {
-    name: "Sneha K.",
-    role: "MBA Freshman",
-    text: "The group chat we all needed but didn't know about. Life saver during exams!",
-    avatar: "📚",
-    color: "bg-[#FFE66D]",
-  },
+    name: "Sneha",
+    role: "ECE Junior",
+    text: "I love how easy it is to connect with my classmates and share the latest tea ☕️",
+    avatar: "👩‍🎓",
+    color: "bg-green-500",
+  }
 ];
 
 const Testimonials = () => {

@@ -159,33 +159,6 @@ const UserProfileButton = () => {
   );
 };
 
-// const HomeTabsButton = () => {
-//   const [activeTab, setActiveTab] = useState("hot");
-//   const tabs = [
-//     { id: "hot", label: "🔥 Hot", icon: Flame },
-//     { id: "new", label: "⚡ New", icon: Clock },
-//     { id: "top", label: "📈 Top", icon: TrendingUp },
-//   ];
-
-//   return (
-//     <div className="flex gap-3 overflow-x-auto pb-2">
-//       {tabs.map((tab) => (
-//         <button
-//           key={tab.id}
-//           onClick={() => setActiveTab(tab.id)}
-//           className={`flex items-center gap-2 px-6 py-3 border-4 border-border rounded-full font-normal transition-all ${
-//             activeTab === tab.id
-//               ? "bg-accent text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-//               : "bg-card text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-//           }`}
-//         >
-//           {tab.label}
-//         </button>
-//       ))}
-//     </div>
-//   );
-// };
-
 const HomeCreatePostButton = ({
   onClick,
   isOpen,
@@ -226,7 +199,6 @@ export {
   SignUpBackButton,
   SignInButton,
   HomeLogoutButton,
-  // HomeTabsButton,
   HomeCreatePostButton,
   HomeCancelButton,
 };

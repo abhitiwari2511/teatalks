@@ -6,7 +6,7 @@ const FeatureSection = () => {
       icon: "🎓",
       title: "Verified Students Only",
       description:
-        "Only @abc.ac.in emails allowed. No randos, just your college fam.",
+        "Only college (@hmritm.ac.in) emails allowed. No randos, just your college fam.",
     },
     {
       icon: "💬",

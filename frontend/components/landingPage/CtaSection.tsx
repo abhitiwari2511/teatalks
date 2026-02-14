@@ -23,7 +23,7 @@ const CtaSection = () => {
             Ready to Stop Missing Out?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Your @abc.ac.in email is the golden ticket. Join in 2 minutes and
+            Your college email is the golden ticket. Join in 2 minutes and
             never feel FOMO again.
           </p>
           <CtaRegisterButton />

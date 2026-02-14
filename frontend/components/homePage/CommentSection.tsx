@@ -43,7 +43,7 @@ export default function CommentSection({
     } finally {
       setLoading(false);
     }
-  }, [postId]);
+  }, [postId, getCommentsForPost]);
 
   useEffect(() => {
     fetchComments();
@@ -56,7 +56,7 @@ export default function CommentSection({
       setSubmitting(true);
       await createPostComment(postId, newComment.trim());
       setNewComment("");
-      await fetchComments(); 
+      await fetchComments(); // Refresh comments
     } catch (error) {
       console.error("Error creating comment:", error);
     } finally {
@@ -81,8 +81,6 @@ export default function CommentSection({
   ) => {
     try {
       await toggleCommentReaction(commentId, reactionType);
-
-      // Update local state
       setComments((prev) =>
         prev.map((comment) => {
           if (comment._id === commentId && comment.reactionCount) {
@@ -128,7 +126,6 @@ export default function CommentSection({
       exit={{ opacity: 0, height: 0 }}
       className="border-t-4 border-border mt-4 pt-4"
     >
-      {/* Comment Input */}
       <div className="mb-4">
         <Textarea
           placeholder="Write a comment..."
@@ -163,7 +160,6 @@ export default function CommentSection({
         </div>
       </div>
 
-      {/* Comments List */}
       <div className="space-y-3">
         {loading ? (
           <div className="text-center py-4 text-muted-foreground">
@@ -215,7 +211,6 @@ export default function CommentSection({
                   {comment.content}
                 </p>
 
-                {/* Comment Reactions */}
                 <div className="flex items-center gap-2">
                   {comment.reactionCount &&
                     Object.values(comment.reactionCount).some(
@@ -244,7 +239,6 @@ export default function CommentSection({
                       </div>
                     )}
 
-                  {/* Reaction Buttons */}
                   {(
                     Object.entries(reactionEmojis) as [
                       keyof typeof reactionEmojis,
