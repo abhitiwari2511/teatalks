@@ -455,6 +455,38 @@ const updateBio = asyncHandler(async (req, res) => {
   });
 });
 
+const getPlatformStats = asyncHandler(async (req, res) => {
+  try {
+    const [userCount, postCount, commentCount] = await Promise.all([
+      User.countDocuments(),
+      Post.countDocuments(),
+      Comment.countDocuments(),
+    ]);
+
+    // Calculate posts from last 24 hours for "daily posts"
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const dailyPostCount = await Post.countDocuments({
+      createdAt: { $gte: oneDayAgo },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        userCount,
+        postCount,
+        commentCount,
+        dailyPostCount,
+      },
+      message: "Platform stats fetched successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch platform stats",
+    });
+  }
+});
+
 export {
   registerUser,
   verifyOTP,
@@ -464,5 +496,6 @@ export {
   refreshAccessToken,
   getCurrentUser,
   getUserProfile,
-  updateBio
+  updateBio,
+  getPlatformStats,
 };
