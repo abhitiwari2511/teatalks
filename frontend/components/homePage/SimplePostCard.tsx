@@ -3,6 +3,10 @@
 import { Post } from "@/types/types";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { usePosts } from "@/hooks/usePosts";
+import { useState } from "react";
 
 interface SimplePostCardProps {
   post: Post;
@@ -18,6 +22,9 @@ const colors = [
 
 export default function SimplePostCard({ post, index }: SimplePostCardProps) {
   const router = useRouter();
+  const { user } = useAuth();
+  const { deleteUserPost } = usePosts();
+  const [isDeleting, setIsDeleting] = useState(false);
   const bgColor = colors[index % colors.length];
 
   const formatDate = (dateString: string) => {
@@ -33,6 +40,24 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
     router.push(`/post/${post._id}`);
   };
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      setIsDeleting(true);
+      try {
+        await deleteUserPost(post._id);
+        // Reload to show updated posts
+        window.location.reload();
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+        setIsDeleting(false);
+      }
+    }
+  };
+
+  const isOwnPost =
+    user && typeof post.authorId !== "string" && post.authorId._id === user._id;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -43,24 +68,36 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
     >
       {/* Username and date */}
       <div className="flex items-center justify-between mb-3">
-        <div className="font-bold text-black">
+        <div className="font-normal text-black">
           @
           {typeof post.authorId === "string"
             ? "Unknown"
             : post.authorId.userName}
         </div>
-        <div className="text-sm text-black/70 font-normal">
-          {formatDate(post.createdAt)}
+        <div className="flex items-center gap-3">
+          <div className="text-sm text-black/70 font-normal">
+            {formatDate(post.createdAt)}
+          </div>
+          {isOwnPost && (
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="text-black/60 hover:text-red-600 transition-colors disabled:opacity-50"
+              title="Delete post"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
       {/* Title */}
-      <h3 className="text-xl font-black text-black mb-2 wrap-break-word">
+      <h3 className="text-xl font-bold text-black mb-2 wrap-break-word">
         {post.title}
       </h3>
 
       {/* Content */}
-      <p className="text-black font-normal line-clamp-3 whitespace-pre-wrap wrap-break-word">
+      <p className="text-black font-extralight line-clamp-3 whitespace-pre-wrap wrap-break-word">
         {post.content}
       </p>
 

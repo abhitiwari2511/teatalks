@@ -238,18 +238,11 @@ export function usePostPage(postId: string, userId?: string) {
 
     setIsSubmitting(true);
     try {
-      const newComment = await createPostComment(post._id, commentText);
-      setComments((prev) => [newComment, ...prev]);
-      setCommentText("");
-
-      setPost((prevPost) =>
-        prevPost
-          ? { ...prevPost, commentCount: (prevPost.commentCount || 0) + 1 }
-          : null,
-      );
+      await createPostComment(post._id, commentText);
+      // Reload to show the new comment with fresh data
+      window.location.reload();
     } catch (error) {
       console.error("Failed to create comment:", error);
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -257,16 +250,8 @@ export function usePostPage(postId: string, userId?: string) {
   const handleDeleteComment = async (commentId: string) => {
     try {
       await deletePostComment(commentId);
-      setComments((prev) => prev.filter((c) => c._id !== commentId));
-
-      setPost((prevPost) =>
-        prevPost
-          ? {
-              ...prevPost,
-              commentCount: Math.max(0, (prevPost.commentCount || 0) - 1),
-            }
-          : null,
-      );
+      // Reload to show updated comments
+      window.location.reload();
     } catch (error) {
       console.error("Failed to delete comment:", error);
     }

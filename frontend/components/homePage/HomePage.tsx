@@ -4,11 +4,13 @@ import { motion } from "motion/react";
 import { useEffect } from "react";
 import { HomePageForm } from "../ClientSideForms";
 import { usePosts } from "@/hooks/usePosts";
+import { useAuth } from "@/hooks/useAuth";
 import Header from "./Header";
 import SimplePostCard from "./SimplePostCard";
 
 export default function HomePage() {
   const { posts, loading, error, fetchPosts } = usePosts();
+  const { loading: authLoading } = useAuth();
 
   useEffect(() => {
     fetchPosts();
@@ -34,7 +36,7 @@ export default function HomePage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        {loading && (
+        {(loading || authLoading) && (
           <div className="text-center py-8">
             <p className="text-muted-foreground italic">Loading posts...</p>
           </div>
@@ -46,7 +48,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {!loading && !error && posts.length === 0 && (
+        {!loading && !authLoading && !error && posts.length === 0 && (
           <div className="text-center py-8">
             <p className="text-muted-foreground italic">
               No posts yet. Be the first! 🚀
@@ -61,6 +63,7 @@ export default function HomePage() {
 
             <div className="space-y-6">
               {!loading &&
+                !authLoading &&
                 !error &&
                 posts.length > 0 &&
                 posts.map((post, index) => (

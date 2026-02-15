@@ -34,7 +34,7 @@ const UserPost = () => {
   const params = useParams();
   const router = useRouter();
   const postId = params.id as string;
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const {
     post,
@@ -53,7 +53,7 @@ const UserPost = () => {
     handleDeletePost,
   } = usePostPage(postId, user?._id);
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-background dark">
         <Header />

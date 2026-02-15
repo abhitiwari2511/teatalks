@@ -2,6 +2,8 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useAuth } from "@/hooks/useAuth";
+import { usePosts } from "@/hooks/usePosts";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import WeeklyActivityCard from "@/components/profile/WeeklyActivityCard";
@@ -13,6 +15,8 @@ const UserProfile = () => {
   const params = useParams();
   const router = useRouter();
   const username = params.username as string;
+  const { user, loading: authLoading } = useAuth();
+  const { deleteUserPost } = usePosts();
 
   const {
     profileData,
@@ -25,7 +29,13 @@ const UserProfile = () => {
     handleCloseModal,
   } = useUserProfile(username);
 
-  if (loading) {
+  const handleDeletePost = async (postId: string) => {
+    await deleteUserPost(postId);
+    // refrsh to see post removed
+    window.location.reload();
+  };
+
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-background dark flex items-center justify-center">
         <div className="text-center">
@@ -99,6 +109,10 @@ const UserProfile = () => {
                         key={post._id}
                         post={post}
                         index={index}
+                        userId={user?._id}
+                        onDeletePost={
+                          isOwnProfile ? handleDeletePost : undefined
+                        }
                       />
                     ))}
                   </div>

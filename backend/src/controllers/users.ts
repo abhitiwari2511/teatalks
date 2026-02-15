@@ -387,7 +387,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   const post = await Post.find({ authorId: user._id })
     .sort({ createdAt: -1 })
-    .populate("authorId", "userName fullName");
+    .populate("authorId", "_id userName fullName");
 
   const commentCount = await Comment.countDocuments({ authorId: user._id });
 

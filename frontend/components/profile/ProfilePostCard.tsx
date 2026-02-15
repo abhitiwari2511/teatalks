@@ -1,14 +1,23 @@
 import { Post } from "@/types/types";
 import { motion } from "motion/react";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 interface ProfilePostCardProps {
   post: Post;
   index: number;
+  userId?: string;
+  onDeletePost?: (postId: string) => Promise<void>;
 }
 
-export default function ProfilePostCard({ post, index }: ProfilePostCardProps) {
+export default function ProfilePostCard({
+  post,
+  index,
+  userId,
+  onDeletePost,
+}: ProfilePostCardProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
   const formatDate = (dateString: string) => {
     const now = new Date();
     const postDate = new Date(dateString);
@@ -35,6 +44,23 @@ export default function ProfilePostCard({ post, index }: ProfilePostCardProps) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!onDeletePost) return;
+
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      setIsDeleting(true);
+      try {
+        await onDeletePost(post._id);
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+        setIsDeleting(false);
+      }
+    }
+  };
+
+  const isOwnPost =
+    userId && typeof post.authorId !== "string" && post.authorId._id === userId;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -47,6 +73,16 @@ export default function ProfilePostCard({ post, index }: ProfilePostCardProps) {
         <div className="text-sm text-muted-foreground font-normal">
           {formatDate(post.createdAt)}
         </div>
+        {isOwnPost && onDeletePost && (
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="text-muted-foreground hover:text-red-600 transition-colors disabled:opacity-50"
+            title="Delete post"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
       {/* content */}
@@ -71,7 +107,7 @@ export default function ProfilePostCard({ post, index }: ProfilePostCardProps) {
             )}
             {post.reactionCount.love > 0 && (
               <span className="text-xl bg-background border-2 border-border rounded-full px-3 py-1">
-                ❤️ {post.reactionCount.love}
+                💝 {post.reactionCount.love}
               </span>
             )}
             {post.reactionCount.funny > 0 && (

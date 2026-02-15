@@ -44,7 +44,6 @@ export default function PostContent({
 
   const isOwnPost =
     userId && typeof post.authorId !== "string" && post.authorId._id === userId;
-
   return (
     <div className="space-y-6">
       {/* Back button */}
@@ -65,8 +64,8 @@ export default function PostContent({
             onClick={handleUsernameClick}
             className="cursor-pointer hover:underline"
           >
-            <div className="text-2xl font-black text-black">
-              {typeof post.authorId === "string"
+            <div className="text-2xl font-normal text-black">
+              @{typeof post.authorId === "string"
                 ? "Unknown"
                 : post.authorId.userName}
             </div>
@@ -89,12 +88,12 @@ export default function PostContent({
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-black text-black mb-4 wrap-break-word">
+        <h1 className="text-3xl font-black text-cyan-600 mb-4 wrap-break-word">
           {post.title}
         </h1>
 
         {/* Content */}
-        <div className="text-black font-normal text-lg whitespace-pre-wrap wrap-break-word">
+        <div className="text-red-600 font-normal text-lg whitespace-pre-wrap wrap-break-word">
           {post.content}
         </div>
       </div>

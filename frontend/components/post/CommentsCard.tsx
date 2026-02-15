@@ -50,6 +50,10 @@ export default function CommentsCard({
         <AnimatePresence>
           {comments.map((comment) => {
             const userReaction = userCommentReactions[comment._id];
+            const isOwnComment =
+              userId &&
+              typeof comment.authorId !== "string" &&
+              comment.authorId._id === userId;
 
             return (
               <motion.div
@@ -77,16 +81,14 @@ export default function CommentsCard({
                       </div>
                     </div>
                   </div>
-                  {userId &&
-                    typeof comment.authorId !== "string" &&
-                    comment.authorId._id === userId && (
-                      <button
-                        onClick={() => onDeleteComment(comment._id)}
-                        className="text-black/60 cursor-pointer hover:text-black transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
+                  {isOwnComment && (
+                    <button
+                      onClick={() => onDeleteComment(comment._id)}
+                      className="text-black/60 cursor-pointer hover:text-black transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
                 <p className="text-black font-normal text-sm mb-3 wrap-break-word">

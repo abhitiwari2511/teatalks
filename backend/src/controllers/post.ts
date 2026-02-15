@@ -18,9 +18,14 @@ const createPost = asyncHandler(async (req, res) => {
     authorId,
   });
 
+  const populatedPost = await Post.findById(newPost._id).populate(
+    "authorId",
+    "_id userName fullName",
+  );
+
   return res.status(201).json({
     success: true,
-    data: newPost,
+    data: populatedPost,
   });
 });
 
@@ -33,7 +38,7 @@ const getAllPost = asyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const posts = await Post.find()
-    .populate("authorId", "userName fullName")
+    .populate("authorId", "_id userName fullName")
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);
@@ -54,7 +59,7 @@ const getPostById = asyncHandler(async (req, res) => {
 
   const post = await Post.findById(postId).populate(
     "authorId",
-    "userName fullName",
+    "_id userName fullName",
   );
 
   if (!post) {
@@ -99,8 +104,8 @@ const updatePost = asyncHandler(async (req, res) => {
   const updatedPost = await Post.findByIdAndUpdate(
     postId,
     { title, content },
-    { new: true, runValidators: true }
-  ).populate('authorId', 'userName fullName');
+    { new: true, runValidators: true },
+  ).populate("authorId", "_id userName fullName");
 
   return res.status(200).json({
     success: true,

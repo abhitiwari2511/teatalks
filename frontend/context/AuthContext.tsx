@@ -67,10 +67,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const loginData = response.data as { user: User };
       setUser(loginData.user);
     } catch (error: unknown) {
-      const errorMessage =
-        "Invalid Credentials"
+      const errorMessage = "Invalid Credentials";
       setError(errorMessage);
-      console.log("error" + error)
+      console.log("error" + error);
     } finally {
       setLoading(false);
     }

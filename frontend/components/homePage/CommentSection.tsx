@@ -55,11 +55,10 @@ export default function CommentSection({
     try {
       setSubmitting(true);
       await createPostComment(postId, newComment.trim());
-      setNewComment("");
-      await fetchComments(); // Refresh comments
+      // Reload to show the new comment with fresh data
+      window.location.reload();
     } catch (error) {
       console.error("Error creating comment:", error);
-    } finally {
       setSubmitting(false);
     }
   };
@@ -69,7 +68,8 @@ export default function CommentSection({
 
     try {
       await deletePostComment(commentId);
-      setComments((prev) => prev.filter((c) => c._id !== commentId));
+      // Reload to show updated comments
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting comment:", error);
     }

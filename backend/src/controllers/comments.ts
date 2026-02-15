@@ -28,11 +28,16 @@ const createComment = asyncHandler(async (req, res) => {
     postId: postId as string,
   });
 
+  const populatedComment = await Comment.findById(newComment._id).populate(
+    "authorId",
+    "_id userName fullName",
+  );
+
   await Post.findByIdAndUpdate(postId, {
     $inc: { commentCount: 1 },
   });
 
-  return res.status(201).json({ success: true, data: newComment });
+  return res.status(201).json({ success: true, data: populatedComment });
 });
 
 const getCommentsForPost = asyncHandler(async (req, res) => {
@@ -50,7 +55,7 @@ const getCommentsForPost = asyncHandler(async (req, res) => {
   }
 
   const comments = await Comment.find({ postId: postId as string })
-    .populate("authorId", "userName fullName")
+    .populate("authorId", "_id userName fullName")
     .sort({ createdAt: -1 });
 
   return res.status(200).json({ success: true, data: comments });

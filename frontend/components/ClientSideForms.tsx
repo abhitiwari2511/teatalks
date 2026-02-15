@@ -378,7 +378,8 @@ const HomePageForm = () => {
       setTitle("");
       setContent("");
       setShowCreatePost(!showCreatePost);
-      await fetchPosts();
+      // Reload to show the new post with fresh data
+      window.location.reload();
     } catch (error) {
       console.error("Failed to create post:", error);
     }
