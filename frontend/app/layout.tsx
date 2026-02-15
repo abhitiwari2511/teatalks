@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bangers } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { Analytics } from "@vercel/analytics/next";
 
 const bangers = Bangers({
   variable: "--font-bangers",
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${bangers.variable} antialiased`}>
+        <Analytics />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

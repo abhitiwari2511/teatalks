@@ -18,6 +18,10 @@ export default function ProfilePostCard({
   onDeletePost,
 }: ProfilePostCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const isOwnPost =
+    userId && typeof post.authorId !== "string" && post.authorId._id === userId;
+
   const formatDate = (dateString: string) => {
     const now = new Date();
     const postDate = new Date(dateString);
@@ -57,9 +61,6 @@ export default function ProfilePostCard({
       }
     }
   };
-
-  const isOwnPost =
-    userId && typeof post.authorId !== "string" && post.authorId._id === userId;
 
   return (
     <motion.div

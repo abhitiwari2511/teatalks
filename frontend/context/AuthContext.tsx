@@ -109,13 +109,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await me();
       if (response.data) {
-        const userData = response.data as { data: User };
-        setUser(userData.data);
+        const userData = response.data as { user: User };
+        setUser(userData.user);
       } else {
         setUser(null);
       }
     } catch (error: unknown) {
-      console.log("failed to fetch user" + error);
+      console.log("Failed to fetch user:", error);
+      setUser(null);
     } finally {
       setLoading(false);
     }

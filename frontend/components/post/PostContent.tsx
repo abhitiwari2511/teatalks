@@ -65,7 +65,8 @@ export default function PostContent({
             className="cursor-pointer hover:underline"
           >
             <div className="text-2xl font-normal text-black">
-              @{typeof post.authorId === "string"
+              @
+              {typeof post.authorId === "string"
                 ? "Unknown"
                 : post.authorId.userName}
             </div>

@@ -54,7 +54,6 @@ export default function CommentsCard({
               userId &&
               typeof comment.authorId !== "string" &&
               comment.authorId._id === userId;
-
             return (
               <motion.div
                 key={comment._id}

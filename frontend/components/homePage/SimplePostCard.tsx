@@ -22,10 +22,38 @@ const colors = [
 
 export default function SimplePostCard({ post, index }: SimplePostCardProps) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { deleteUserPost } = usePosts();
   const [isDeleting, setIsDeleting] = useState(false);
   const bgColor = colors[index % colors.length];
+
+  // Only check ownership after auth has loaded
+  const isOwnPost =
+    !authLoading &&
+    user &&
+    typeof post.authorId !== "string" &&
+    post.authorId._id === user._id;
+
+  console.log("SimplePostCard DETAILED:", {
+    authLoading,
+    notAuthLoading: !authLoading,
+    hasUser: !!user,
+    userId: user?._id,
+    authorIdType: typeof post.authorId,
+    isAuthorIdObject: typeof post.authorId !== "string",
+    authorId:
+      typeof post.authorId !== "string" ? post.authorId._id : post.authorId,
+    idsMatch:
+      typeof post.authorId !== "string"
+        ? post.authorId._id === user?._id
+        : "N/A",
+    isOwnPost,
+    finalCheck:
+      !authLoading &&
+      user &&
+      typeof post.authorId !== "string" &&
+      post.authorId._id === user._id,
+  });
 
   const formatDate = (dateString: string) => {
     const postDate = new Date(dateString);
@@ -55,9 +83,6 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
     }
   };
 
-  const isOwnPost =
-    user && typeof post.authorId !== "string" && post.authorId._id === user._id;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -78,7 +103,7 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
           <div className="text-sm text-black/70 font-normal">
             {formatDate(post.createdAt)}
           </div>
-          {isOwnPost && (
+          {isOwnPost ? (
             <button
               onClick={handleDelete}
               disabled={isDeleting}
@@ -87,6 +112,8 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
             >
               <Trash2 className="w-4 h-4" />
             </button>
+          ) : (
+            <div style={{ width: "16px" }} /> 
           )}
         </div>
       </div>
