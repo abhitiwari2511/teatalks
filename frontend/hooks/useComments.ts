@@ -1,3 +1,4 @@
+import { Comment } from "@/types/types";
 import {
   createComment,
   deleteComment,
@@ -8,7 +9,8 @@ export const useComments = () => {
   const createPostComment = async (postId: string, content: string) => {
     try {
       const response = await createComment({ postId, content });
-      return response.data.data; // Return the created comment
+      const data = response.data as { data: any };
+      return data.data;
     } catch (error) {
       console.log("Error while creating the comment", error);
       throw error;
@@ -27,7 +29,7 @@ export const useComments = () => {
   const getCommentsForPost = async (postId: string) => {
     try {
       const response = await fetchCommentsForPost(postId);
-      return response.data;
+      return response.data as any;
     } catch (error) {
       console.log("Error while fetching comments for the post", error);
       throw error;

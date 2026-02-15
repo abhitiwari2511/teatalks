@@ -37,7 +37,7 @@ export default function CommentSection({
     try {
       setLoading(true);
       const response = await getCommentsForPost(postId);
-      setComments(response.data || []);
+      setComments((response as { data: Comment[] }).data || []);
     } catch (error) {
       console.error("Error fetching comments:", error);
     } finally {

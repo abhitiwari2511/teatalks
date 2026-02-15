@@ -42,7 +42,15 @@ export function usePostPage(postId: string, userId?: string) {
 
         if (userId) {
           try {
-            const reactionsData = await getPostReactions(postId);
+            const reactionsData = (await getPostReactions(postId)) as {
+              success: boolean;
+              data: {
+                reactions: Array<{
+                  userId: { _id: string } | string;
+                  reactionType: string;
+                }>;
+              };
+            };
             if (reactionsData.success && reactionsData.data.reactions) {
               const currentUserReaction = reactionsData.data.reactions.find(
                 (r: {
@@ -70,9 +78,17 @@ export function usePostPage(postId: string, userId?: string) {
 
           for (const comment of fetchedComments) {
             try {
-              const commentReactionsData = await getCommentReactions(
+              const commentReactionsData = (await getCommentReactions(
                 comment._id,
-              );
+              )) as {
+                success: boolean;
+                data: {
+                  reactions: Array<{
+                    userId: { _id: string } | string;
+                    reactionType: string;
+                  }>;
+                };
+              };
               if (
                 commentReactionsData.success &&
                 commentReactionsData.data.reactions

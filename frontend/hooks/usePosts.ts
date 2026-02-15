@@ -1,6 +1,5 @@
 import { createPost, deletePost, getAllPosts, getPostById, updatePost } from "@/lib/api/posts";
 import { Post, PostPayload } from "@/types/types";
-import { AxiosError } from "axios";
 import { useState } from "react";
 
 export const usePosts = () => {
@@ -26,10 +25,7 @@ export const usePosts = () => {
         totalPosts: response.data.totalPosts,
       });
     } catch (error) {
-      const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Failed to fetch posts";
-      setError(errorMessage);
+      console.log("failed to fetch posts" + error)
     } finally {
       setLoading(false);
     }
@@ -42,10 +38,7 @@ export const usePosts = () => {
       const response = await getPostById(postId);
       setCurrentPost(response.data.data);
     } catch (error) {
-      const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Failed to fetch post";
-      setError(errorMessage);
+       console.log("failed to fetch specific post" + error)
     } finally {
       setLoading(false);
     }
@@ -58,10 +51,7 @@ export const usePosts = () => {
       const response = await createPost(data);
       setPosts((prevPosts) => [...prevPosts, response.data.data]);
     } catch (error) {
-      const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Failed to create post";
-      setError(errorMessage);
+        console.log("failed to create post" + error)
     } finally {
       setLoading(false);
     }
@@ -76,10 +66,7 @@ export const usePosts = () => {
           prevPosts.map((post) => (post._id === postId ? response.data.data : post))
         );
     } catch (error) {
-        const errorMessage =
-          (error as AxiosError<{ message: string }>).response?.data?.message ||
-          "Failed to update post";
-        setError(errorMessage);
+        console.log("failed to update the post" + error)
     } finally {
         setLoading(false);
     }
@@ -92,10 +79,7 @@ export const usePosts = () => {
         await deletePost(postId);
         setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
     } catch (error) {
-        const errorMessage =
-          (error as AxiosError<{ message: string }>).response?.data?.message ||
-          "Failed to delete post";
-        setError(errorMessage);
+        console.log("failed to delete the post" + error);
     } finally {
         setLoading(false);
     }

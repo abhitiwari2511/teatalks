@@ -16,10 +16,10 @@ import {
   RegisterUser,
   ResendOTP,
   User,
+  UserProfileData,
   VerifyOTP,
 } from "@/types/types";
 import { createContext, useEffect, useState } from "react";
-import { AxiosError } from "axios";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -46,8 +46,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setTempCredentials({ email: data.email, password: data.password });
     } catch (error: unknown) {
       const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Registration failed";
+        "Failed to register user: " + (error as Error)?.message ||
+        "Unknown error";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -64,12 +64,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false);
         return;
       }
-      setUser(response.data.user);
+      const loginData = response.data as { user: User };
+      setUser(loginData.user);
     } catch (error: unknown) {
       const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Login failed";
+        "Invalid Credentials"
       setError(errorMessage);
+      console.log("error" + error)
     } finally {
       setLoading(false);
     }
@@ -92,8 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: unknown) {
       const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "OTP verification failed";
+        "Failed to verify OTP: " + (error as Error)?.message || "Unknown error";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -110,15 +110,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await me();
       if (response.data) {
-        setUser(response.data.data);
+        const userData = response.data as { data: User };
+        setUser(userData.data);
       } else {
         setUser(null);
       }
     } catch (error: unknown) {
-      const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Failed to fetch user data";
-      setError(errorMessage);
+      console.log("failed to fetch user" + error);
     } finally {
       setLoading(false);
     }
@@ -134,8 +132,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: unknown) {
       const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Resend OTP failed";
+        "Failed to resend OTP: " + (error as Error)?.message || "Unknown error";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -147,11 +144,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setError(null);
     try {
       const response = await getUserProfile(username);
-      return response.data;
+      return response.data as UserProfileData | undefined;
     } catch (error) {
       const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Failed to fetch user profile";
+        "Failed to fetch user profile: " + (error as Error)?.message ||
+        "Unknown error";
       setError(errorMessage);
       throw error;
     } finally {
@@ -161,7 +158,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateUserBio = async (bio: string) => {
     setLoading(true);
-    
+
     try {
       const response = await updateBio(bio);
       if (response.data) {
@@ -169,8 +166,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: unknown) {
       const errorMessage =
-        (error as AxiosError<{ message: string }>).response?.data?.message ||
-        "Failed to update bio";
+        "Failed to update bio: " + (error as Error)?.message || "Unknown error";
       setError(errorMessage);
     } finally {
       setLoading(false);

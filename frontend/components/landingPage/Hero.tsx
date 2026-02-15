@@ -19,8 +19,9 @@ const Hero = () => {
     const fetchStats = async () => {
       try {
         const response = await getPlatformStats();
-        if (response.data.success) {
-          setStats(response.data.data);
+        const data = response.data as { success: boolean; data: PlatformStats };
+        if (data.success) {
+          setStats(data.data);
         }
       } catch (error) {
         console.error("Failed to fetch platform stats:", error);

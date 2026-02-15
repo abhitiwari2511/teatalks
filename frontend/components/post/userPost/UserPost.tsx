@@ -91,7 +91,7 @@ const UserPost = () => {
     <div className="min-h-screen bg-background dark">
       <Header />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container max-w-5xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
