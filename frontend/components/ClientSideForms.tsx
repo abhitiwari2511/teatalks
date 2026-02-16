@@ -367,7 +367,7 @@ const SignUpForm = () => {
 };
 
 const HomePageForm = () => {
-  const { createUserPost, fetchPosts, loading } = usePosts();
+  const { createUserPost, loading } = usePosts();
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

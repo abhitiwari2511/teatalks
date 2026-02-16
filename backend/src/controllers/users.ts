@@ -246,7 +246,8 @@ const loginUser = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict" as const,
+    sameSite: "none" as const,
+    domain: ".teatalks.in",
   };
 
   return res
@@ -283,6 +284,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
+    sameSite: "none" as const,
+    domain: ".teatalks.in",
   };
 
   return res
@@ -339,7 +342,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict" as const,
+      sameSite: "none" as const,
+      domain: ".teatalks.in",
     };
 
     const { accessToken, refreshToken } = await generateTokens(
