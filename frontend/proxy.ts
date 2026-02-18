@@ -26,8 +26,12 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Prevent logged-in users from accessing login page
+  // Prevent logged-in users from accessing login and register page
   if ((accessToken || refreshToken) && pathname === "/login") {
+    return NextResponse.redirect(new URL("/home", request.url));
+  }
+
+  if ((accessToken || refreshToken) && pathname === "/register") {
     return NextResponse.redirect(new URL("/home", request.url));
   }
 
@@ -35,5 +39,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/home/:path*", "/profile/:path*", "/post/:path*", "/login"],
+  matcher: [
+    "/home/:path*",
+    "/profile/:path*",
+    "/post/:path*",
+    "/login",
+    "/register",
+  ],
 };

@@ -77,10 +77,10 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-accent border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-1"
+              className="bg-green-400 border-4 border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-1"
             >
               <h3 className="text-xl font-normal text-foreground mb-3">
-                You&apos;re doing great! 🎉
+                You&apos;re All Doing Great! 🎉
               </h3>
               <div className="space-y-2 text-foreground">
                 <p className="font-normal">📝 {posts.length} posts this week</p>

@@ -50,7 +50,7 @@ const LoginForm = () => {
             id="email"
             type="email"
             disabled={loading}
-            placeholder="you@abc.ac.in"
+            placeholder="you@hmritm.ac.in"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
@@ -71,7 +71,7 @@ const LoginForm = () => {
             id="password"
             type="password"
             disabled={loading}
-            placeholder="••••••••"
+            placeholder="********"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="pl-12 h-14 bg-white border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-foreground"
@@ -83,7 +83,7 @@ const LoginForm = () => {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full cursor-pointer h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
+        className="w-full cursor-pointer h-14 bg-green-400 text-primary border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-green-400"
       >
         {loading ? "Logging in..." : "LET'S GO! 🚀"}
       </Button>
@@ -284,7 +284,7 @@ const SignUpForm = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full cursor-pointer h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary mt-2"
+            className="w-full cursor-pointer h-14 bg-green-400 text-primary border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-green-400 mt-2"
           >
             {loading ? "SENDING OTP..." : "CONTINUE →"}
           </Button>
@@ -320,7 +320,7 @@ const SignUpForm = () => {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-14 bg-primary text-primary-foreground border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-primary"
+              className="w-full h-14 bg-green-400 text-primary border-4 border-border rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-green-400"
             >
               {loading ? "VERIFYING..." : "VERIFY & JOIN! 🎉"}
             </Button>

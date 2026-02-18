@@ -78,7 +78,7 @@ export default function ProfilePostCard({
           <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className="text-muted-foreground hover:text-red-600 transition-colors disabled:opacity-50"
+            className="text-muted-foreground cursor-pointer hover:text-red-600 transition-colors disabled:opacity-50"
             title="Delete post"
           >
             <Trash2 className="w-4 h-4" />

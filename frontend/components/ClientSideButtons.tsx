@@ -20,7 +20,7 @@ const NavRegisterButton = () => {
       <Button
         variant="default"
         onClick={() => router.push("/login")}
-        className="border-4 cursor-pointer bg-pink-200 text-foreground border-border font-normal rounded-full px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-pink-200 transition-all"
+        className="border-4 cursor-pointer bg-green-400 text-foreground border-border font-normal rounded-full px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-green-400 transition-all"
       >
         SIGN IN
       </Button>
@@ -41,7 +41,7 @@ const HeroRegisterButton = () => {
     <Button
       size="lg"
       onClick={() => router.push("/register")}
-      className="bg-primary cursor-pointer text-primary-foreground border-4 border-border rounded-full px-8 py-6 text-lg font-normal shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-primary group"
+      className="bg-green-400 cursor-pointer text-primary border-4 border-border rounded-full px-8 py-6 text-lg font-normal shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-green-400"
     >
       JOIN NOW
       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -56,7 +56,7 @@ const CtaRegisterButton = () => {
     <Button
       size="lg"
       onClick={() => router.push("/register")}
-      className="bg-accent cursor-pointer text-foreground border-4 border-border rounded-full px-8 text-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-accent"
+      className="bg-green-400 cursor-pointer text-foreground border-4 border-border rounded-full px-8 text-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-green-400"
     >
       LET&apos;S GO! 🚀
     </Button>
@@ -68,8 +68,8 @@ const LoginRegisterButton = () => {
   return (
     <Button
       type="button"
-      variant="outline"
-      className="w-full h-14 cursor-pointer bg-accent text-foreground border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-accent"
+      variant="default"
+      className="w-full h-14 cursor-pointer bg-secondary text-foreground border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-lg italic hover:bg-secondary"
       onClick={() => router.push("/register")}
     >
       Create Account
@@ -112,7 +112,7 @@ const SignInButton = () => {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="default"
       className="w-full h-12 cursor-pointer bg-secondary text-foreground border-4 border-border rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all italic hover:bg-secondary"
       onClick={() => router.push("/login")}
     >
@@ -130,11 +130,11 @@ const HomeLogoutButton = () => {
         logout();
         router.push("/");
       }}
-      variant="outline"
+      variant="default"
       size="icon"
-      className="border-4 cursor-pointer border-border rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+      className="border-4 bg-red-400 cursor-pointer border-none rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-red-400 transition-all"
     >
-      <LogOut className="w-5 h-5" />
+      <LogOut className="w-5 text-primary h-5" />
     </Button>
   );
 };
@@ -150,11 +150,11 @@ const UserProfileButton = () => {
   return (
     <Button
       onClick={handleProfileClick}
-      variant="outline"
+      variant="default"
       size="icon"
-      className="border-4 cursor-pointer border-border rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+      className="border-4 cursor-pointer bg-cyan-500 border-none rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-cyan-500 transition-all"
     >
-      <User className="w-5 h-5" />
+      <User className="w-5 h-5 text-primary" />
     </Button>
   );
 };
@@ -169,7 +169,7 @@ const HomeCreatePostButton = ({
   return (
     <Button
       onClick={onClick}
-      className="w-full cursor-pointer bg-primary text-primary-foreground border-4 border-border rounded-2xl py-6 text-lg font-normal shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-primary"
+      className="w-full cursor-pointer bg-blue-800 text-primary-foreground border-4 border-border rounded-2xl py-6 text-lg font-normal shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.75 hover:translate-y-0.75 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-blue-800"
     >
       <Plus className="w-5 h-5 mr-2" />
       {isOpen ? "Cancel" : "Create Post"}

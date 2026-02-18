@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOTPEmail = async (
   to: string,
-  otp: string
+  otp: string,
 ): Promise<{ success: boolean; error?: string }> => {
   try {
     const { error } = await resend.emails.send({
@@ -28,7 +28,7 @@ export const sendOTPEmail = async (
         </head>
         <body>
           <div class="container">
-            <h2 class="header">🍵 Welcome to TeaTalks!</h2>
+            <h2 class="header">☕ Welcome to TeaTalks!</h2>
             <p>Hey there! You're one step away from joining your college community.</p>
             <p>Use this OTP to verify your email:</p>
             <div class="otp-box">

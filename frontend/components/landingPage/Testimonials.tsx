@@ -20,7 +20,7 @@ const dataTestimonials = [
     role: "ECE Junior",
     text: "I love how easy it is to connect with my classmates and share the latest tea ☕️",
     avatar: "👩‍🎓",
-    color: "bg-green-500",
+    color: "bg-green-400",
   }
 ];
 

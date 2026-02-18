@@ -11,7 +11,7 @@ const Footer = () => {
               <div>
                 <div className="text-foreground font-normal">TeaTalks</div>
                 <div className="text-xs text-muted-foreground">
-                  © 2026 • Made for ABC College
+                  © 2026 • Made With Love for HMR College
                 </div>
               </div>
             </div>

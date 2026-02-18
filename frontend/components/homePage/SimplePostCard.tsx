@@ -34,27 +34,6 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
     typeof post.authorId !== "string" &&
     post.authorId._id === user._id;
 
-  console.log("SimplePostCard DETAILED:", {
-    authLoading,
-    notAuthLoading: !authLoading,
-    hasUser: !!user,
-    userId: user?._id,
-    authorIdType: typeof post.authorId,
-    isAuthorIdObject: typeof post.authorId !== "string",
-    authorId:
-      typeof post.authorId !== "string" ? post.authorId._id : post.authorId,
-    idsMatch:
-      typeof post.authorId !== "string"
-        ? post.authorId._id === user?._id
-        : "N/A",
-    isOwnPost,
-    finalCheck:
-      !authLoading &&
-      user &&
-      typeof post.authorId !== "string" &&
-      post.authorId._id === user._id,
-  });
-
   const formatDate = (dateString: string) => {
     const postDate = new Date(dateString);
     return postDate.toLocaleDateString("en-US", {
@@ -107,7 +86,7 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
             <button
               onClick={handleDelete}
               disabled={isDeleting}
-              className="text-black/60 hover:text-red-600 transition-colors disabled:opacity-50"
+              className="text-black/60 cursor-pointer hover:text-red-600 transition-colors disabled:opacity-50"
               title="Delete post"
             >
               <Trash2 className="w-4 h-4" />
@@ -119,19 +98,19 @@ export default function SimplePostCard({ post, index }: SimplePostCardProps) {
       </div>
 
       {/* Title */}
-      <h3 className="text-xl font-bold text-black mb-2 wrap-break-word">
+      <h3 className="text-xl font-normal text-black mb-2">
         {post.title}
       </h3>
 
       {/* Content */}
-      <p className="text-black font-extralight line-clamp-3 whitespace-pre-wrap wrap-break-word">
+      <p className="text-black font-extralight">
         {post.content}
       </p>
 
       {/* Stats footer */}
       <div className="flex items-center gap-4 mt-4 pt-3 border-t-2 border-black/20">
         <div className="text-sm font-semibold text-black">
-          👍{" "}
+          ❤️{" "}
           {(post.reactionCount?.like || 0) +
             (post.reactionCount?.love || 0) +
             (post.reactionCount?.funny || 0) +

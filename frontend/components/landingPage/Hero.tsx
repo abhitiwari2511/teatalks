@@ -61,7 +61,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl font-normal mb-6 text-foreground leading-tight tracking-tight"
+            className="text-6xl md:text-8xl font-normal mb-6 text-foreground leading-tight"
           >
             Your Campus,
             <br />

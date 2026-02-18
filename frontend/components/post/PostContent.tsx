@@ -59,7 +59,7 @@ export default function PostContent({
       {/* Post content */}
       <div className="bg-[#FFF8DC] border-4 border-black rounded-2xl p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         {/* Author info */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div
             onClick={handleUsernameClick}
             className="cursor-pointer hover:underline"
@@ -79,7 +79,7 @@ export default function PostContent({
               <button
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="text-black/60 hover:text-red-600 transition-colors disabled:opacity-50"
+                className="text-black/60 cursor-pointer hover:text-red-600 transition-colors disabled:opacity-50"
                 title="Delete post"
               >
                 <Trash2 className="w-5 h-5" />
@@ -89,12 +89,12 @@ export default function PostContent({
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-black text-cyan-600 mb-4 wrap-break-word">
+        <h1 className="text-3xl font-black text-blue-700 mb-4">
           {post.title}
         </h1>
 
         {/* Content */}
-        <div className="text-red-600 font-normal text-lg whitespace-pre-wrap wrap-break-word">
+        <div className="text-red-600 font-normal text-lg">
           {post.content}
         </div>
       </div>

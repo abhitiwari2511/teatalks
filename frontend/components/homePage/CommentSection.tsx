@@ -199,7 +199,7 @@ export default function CommentSection({
                     comment.authorId._id === user._id && (
                       <button
                         onClick={() => handleDeleteComment(comment._id)}
-                        className="text-red-500 hover:text-red-700 transition-colors"
+                        className="text-red-500 cursor-pointer hover:text-red-700 transition-colors"
                         title="Delete comment"
                       >
                         <Trash2 className="w-4 h-4" />
