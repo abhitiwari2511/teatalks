@@ -101,8 +101,8 @@ const Hero = () => {
             {[
               { value: formatNumber(stats.userCount), label: "Students" },
               {
-                value: formatNumber(stats.dailyPostCount),
-                label: "Daily Posts",
+                value: formatNumber(stats.postCount),
+                label: "Posts",
               },
               { value: formatNumber(stats.commentCount), label: "Comments" },
             ].map((stat, index) => (

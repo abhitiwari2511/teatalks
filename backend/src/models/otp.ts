@@ -20,7 +20,7 @@ const pendingUserSchema = new Schema(
       required: true,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const otpSchema = new Schema<otpSchemaModel>(
@@ -38,7 +38,6 @@ const otpSchema = new Schema<otpSchemaModel>(
     expiresAt: {
       type: Date,
       required: true,
-      index: true,
     },
     attempts: {
       type: Number,
@@ -51,7 +50,7 @@ const otpSchema = new Schema<otpSchemaModel>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // hashing of otp
@@ -61,7 +60,7 @@ otpSchema.pre("save", async function () {
 });
 
 otpSchema.methods.verifyOTP = async function (
-  enteredOTP: string
+  enteredOTP: string,
 ): Promise<boolean> {
   return await bcrypt.compare(enteredOTP, this.otp);
 };

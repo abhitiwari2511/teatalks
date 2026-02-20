@@ -258,7 +258,6 @@ const loginUser = asyncHandler(async (req, res) => {
       success: true,
       user: loggedInUser,
       accessToken,
-      refreshToken,
       message: "Login successful",
     });
 });
@@ -379,7 +378,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({ userName: username }).select(
-    "-password -refreshToken",
+    "-password -refreshToken -email -fullName",
   );
 
   if (!user) {
@@ -391,7 +390,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   const post = await Post.find({ authorId: user._id })
     .sort({ createdAt: -1 })
-    .populate("authorId", "_id userName fullName");
+    .populate("authorId", "_id userName");
 
   const commentCount = await Comment.countDocuments({ authorId: user._id });
 

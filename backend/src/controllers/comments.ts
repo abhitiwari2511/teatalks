@@ -30,7 +30,7 @@ const createComment = asyncHandler(async (req, res) => {
 
   const populatedComment = await Comment.findById(newComment._id).populate(
     "authorId",
-    "_id userName fullName",
+    "_id userName",
   );
 
   await Post.findByIdAndUpdate(postId, {
@@ -55,7 +55,7 @@ const getCommentsForPost = asyncHandler(async (req, res) => {
   }
 
   const comments = await Comment.find({ postId: postId as string })
-    .populate("authorId", "_id userName fullName")
+    .populate("authorId", "_id userName")
     .sort({ createdAt: -1 });
 
   return res.status(200).json({ success: true, data: comments });

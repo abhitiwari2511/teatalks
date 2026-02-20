@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ArrowLeft,
-  ArrowRight,
-  LogOut,
-  Plus,
-  User,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, LogOut, Plus, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { motion } from "motion/react";
@@ -16,17 +10,17 @@ const NavRegisterButton = () => {
   const router = useRouter();
 
   return (
-    <div className="space-x-3">
+    <div className="space-x-3 flex items-center justify-center">
       <Button
         variant="default"
         onClick={() => router.push("/login")}
-        className="border-4 cursor-pointer bg-green-400 text-foreground border-border font-normal rounded-full px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-green-400 transition-all"
+        className="border-4 cursor-pointer bg-green-400 text-foreground border-border font-normal rounded-full sm:px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-green-400 transition-all"
       >
         SIGN IN
       </Button>
       <Button
         onClick={() => router.push("/register")}
-        className="bg-accent cursor-pointer text-foreground border-4 font-normal border-border rounded-full px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-accent"
+        className="bg-accent cursor-pointer text-foreground border-4 font-normal border-border rounded-full sm:px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-accent"
       >
         GET STARTED
       </Button>

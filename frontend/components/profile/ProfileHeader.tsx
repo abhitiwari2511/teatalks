@@ -22,7 +22,7 @@ export const ProfileHeader = ({
     <div className="bg-card border-4 border-border rounded-2xl p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-6">
       <div className="flex items-start gap-4">
         <div className="w-20 h-20 sm:w-32 sm:h-32 bg-secondary rounded-full border-4 border-border flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] shrink-0">
-          <span className="text-xl md:text-6xl">👤</span>
+          <span className="text-3xl sm:text-6xl">👤</span>
         </div>
 
         <div className="flex-1 min-w-0">

@@ -136,7 +136,7 @@ const getReactions = asyncHandler(async (req, res) => {
   const reactions = await Reaction.find({
     targetId: targetId as string,
     targetType,
-  }).populate("userId", "userName fullName");
+  }).populate("userId", "userName");
 
   // Group by reaction type
   const grouped = reactions.reduce((acc: any, reaction: any) => {

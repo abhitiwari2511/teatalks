@@ -10,7 +10,7 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex max-w-4xl mx-auto items-center justify-between">
             {/* Logo */}
-            <Link href={"/"} className="flex items-center cursor-pointer gap-3">
+            <Link href={"/home"} className="flex items-center cursor-pointer gap-3">
               <div className="w-12 h-12 bg-secondary rounded-full border-4 border-border flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <span className="text-2xl">☕</span>
               </div>
