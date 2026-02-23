@@ -9,6 +9,7 @@ import {
   resendOTP,
   getUserProfile,
   updateBio,
+  resetPassword,
 } from "@/lib/api/auth";
 import {
   AuthContextType,
@@ -173,6 +174,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const forgotPassword = async (email: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      await forgotPassword(email);
+    } catch (error: unknown) {
+      const errorMessage =
+        "Failed to send forgot password email: " + (error as Error)?.message ||
+        "Unknown error";
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetUserPassword = async (data: {
+    email: string;
+    otp: string;
+    newPassword: string;
+  }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      await resetPassword(data.email, data.otp, data.newPassword);
+    } catch (error: unknown) {
+      const errorMessage =
+        "Failed to reset password: " + (error as Error)?.message ||
+        "Unknown error";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getCurrentUser();
   }, []);
@@ -187,6 +221,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     verifyOTP: verifyUserOTP,
     resendOTP: resendUserOTP,
     getCurrentUser,
+    forgotPassword: forgotPassword,
+    resetPassword: resetUserPassword,
     logout: logoutUser,
     getUserProfile: userProfile,
     updateBio: updateUserBio,

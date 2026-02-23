@@ -490,6 +490,122 @@ const getPlatformStats = asyncHandler(async (req, res) => {
   }
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      message: "Email is required",
+    });
+  }
+
+  const user = await User.findOne({ email: email.toLowerCase() });
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "No user found with that email",
+    });
+  }
+
+  const otp = generateOTP();
+
+  await OTP.deleteOne({ email: email.toLowerCase() });
+
+  await OTP.create({
+    email: email.toLowerCase(),
+    otp,
+    expiresAt: getOTPExpiry(),
+    attempts: 0,
+    pendingUser: {
+      userId: user._id,
+    },
+  });
+
+  const sendOTPResult = await sendOTPEmail(email, otp);
+
+  if (!sendOTPResult.success) {
+    await OTP.deleteOne({ email: email.toLowerCase() });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send OTP email. Please try again.",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "OTP sent to your email for password reset",
+  });
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  const otpRecord = await OTP.findOne({ email: email.toLowerCase() });
+
+  if (!otpRecord || !otpRecord.pendingUser?.userId) {
+    return res.status(400).json({
+      success: false,
+      message: "No password reset request found. Please try again.",
+    });
+  }
+
+  // otp expiry
+  if (otpRecord.expiresAt < new Date()) {
+    await OTP.deleteOne({ email: email.toLowerCase() });
+    return res.status(400).json({
+      success: false,
+      message: "OTP expired. Please request a new one.",
+    });
+  }
+
+  // otp attempts
+  if (otpRecord.attempts >= OTP_MAX_ATTEMPTS) {
+    await OTP.deleteOne({ email: email.toLowerCase() });
+    return res.status(400).json({
+      success: false,
+      message: "Too many failed attempts. Please request a new OTP.",
+    });
+  }
+
+  const isOTPValid = await otpRecord.verifyOTP(otp);
+
+  if (!isOTPValid) {
+    otpRecord.attempts += 1;
+    await otpRecord.save();
+
+    return res.status(400).json({
+      success: false,
+      message: `Invalid OTP. ${
+        OTP_MAX_ATTEMPTS - otpRecord.attempts
+      } attempts remaining.`,
+    });
+  }
+
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+  const user = await User.findByIdAndUpdate(
+    otpRecord.pendingUser.userId,
+    { password: newPasswordHash },
+    { new: true, runValidators: true },
+  );
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "Failed to reset password",
+    });
+  }
+
+  await OTP.deleteOne({ email: email.toLowerCase() });
+
+  return res.status(200).json({
+    success: true,
+    message: "Password reset successfully",
+  });
+});
+
 export {
   registerUser,
   verifyOTP,
@@ -501,4 +617,6 @@ export {
   getUserProfile,
   updateBio,
   getPlatformStats,
+  forgotPassword,
+  resetPassword,
 };

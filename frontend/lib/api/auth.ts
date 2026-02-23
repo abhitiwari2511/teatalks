@@ -40,3 +40,6 @@ export const refreshToken = () => client.post("/users/refresh-token");
 export const updateBio = (bio: string) =>
   client.patch("/users/update-bio", { bio });
 export const getPlatformStats = () => client.get("/users/platform-stats");
+export const forgotPassword = (email: string) => client.post("/users/forgot-password", { email });
+export const resetPassword = (email: string, otp: string, newPassword: string) =>
+  client.post("/users/reset-password", { email, otp, newPassword });

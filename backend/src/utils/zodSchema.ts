@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { COLLEGE_EMAIL_DOMAIN } from "../config/constants.js";
 
-const emailSchema = z
+export const emailSchema = z
   .string()
   .email("Invalid email format")
 
-const passwordSchema = z
+export const passwordSchema = z
   .string()
   .min(6, "Password must be at least 6 characters")
   .max(100, "Password too long");

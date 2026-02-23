@@ -17,9 +17,10 @@ export interface userMethods {
 }
 
 export interface PendingUserData {
-  fullName: string;
-  userName: string;
-  password: string;
+  fullName?: string;
+  userName?: string;
+  password?: string;
+  userId?: Types.ObjectId | string;
 }
 
 export interface otpSchemaModel {
@@ -45,18 +46,18 @@ export interface postModelType {
 }
 
 export interface commentType {
-  content: string,
-  authorId: Types.ObjectId,
-  postId: Types.ObjectId,
+  content: string;
+  authorId: Types.ObjectId;
+  postId: Types.ObjectId;
   reactionCount: {
-    like: number,
-    love: number
-  }
+    like: number;
+    love: number;
+  };
 }
 
 export interface reactionType {
   userId: Types.ObjectId;
   targetId: Types.ObjectId;
-  targetType: string,
-  reactionType: string
+  targetType: string;
+  reactionType: string;
 }

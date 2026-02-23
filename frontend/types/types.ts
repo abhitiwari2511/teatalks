@@ -75,6 +75,8 @@ export interface AuthContextType {
   getCurrentUser: () => Promise<void>;
   logout: () => void;
   updateBio: (bio: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (data: { email: string; otp: string; newPassword: string }) => Promise<void>;
   getUserProfile: (username: string) => Promise<UserProfileData | undefined>;
 }
 

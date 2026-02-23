@@ -111,6 +111,11 @@ const SignUpForm = () => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      alert("Password must be at least 6 characters long");
+      return;
+    }
+
     try {
       await register({
         fullName: formData.fullName,

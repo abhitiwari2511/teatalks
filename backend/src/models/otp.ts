@@ -6,18 +6,23 @@ const pendingUserSchema = new Schema(
   {
     fullName: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     userName: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
       lowercase: true,
     },
     password: {
       type: String,
-      required: true,
+      required: false,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
     },
   },
   { _id: false },

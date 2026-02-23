@@ -10,6 +10,8 @@ import {
   getUserProfile,
   updateBio,
   getPlatformStats,
+  forgotPassword,
+  resetPassword,
 } from "../controllers/users.js";
 import { verifyJWT } from "../middlewares/auth.js";
 import { validate } from "../middlewares/validate.js";
@@ -19,6 +21,7 @@ import {
   verifyOTPSchema,
   resendOTPSchema,
 } from "../utils/zodSchema.js";
+import { forgotPasswordSchema, resetPasswordSchema } from "../utils/forgotPasswordSchema.js";
 
 const userRouter = Router();
 
@@ -29,6 +32,8 @@ userRouter.route("/login").post(validate(loginSchema), loginUser);
 userRouter.route("/refresh-token").post(refreshAccessToken);
 userRouter.route("/profile/:username").get(verifyJWT, getUserProfile);
 userRouter.route("/platform-stats").get(getPlatformStats);
+userRouter.route("/forgot-password").post(validate(forgotPasswordSchema), forgotPassword);
+userRouter.route("/reset-password").post(validate(resetPasswordSchema), resetPassword);
 
 // secured routes
 userRouter.route("/logout").post(verifyJWT, logoutUser);

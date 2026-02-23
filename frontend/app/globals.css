@@ -6,24 +6,24 @@
 
 :root {
   --font-size: 16px;
-  --background: #65d0b9;
+  --background: #79e9eb;
   --foreground: #1a1a1a;
-  --card: #F8EDD3;
+  --card: #f8edd3;
   --card-foreground: #1a1a1a;
-  --popover: #F8EDD3;
+  --popover: #f8edd3;
   --popover-foreground: #1a1a1a;
   --primary: #1a1a1a;
-  --primary-foreground: #F8EDD3;
-  --secondary: #FFB5C2;
+  --primary-foreground: #f8edd3;
+  --secondary: #ffb5c2;
   --secondary-foreground: #1a1a1a;
-  --muted: #D4A5A5;
+  --muted: #d4a5a5;
   --muted-foreground: #4a4a4a;
-  --accent: #FFA07A;
+  --accent: #ffa07a;
   --accent-foreground: #1a1a1a;
-  --destructive: #FF6B6B;
+  --destructive: #ff6b6b;
   --destructive-foreground: #ffffff;
   --border: #1a1a1a;
-  --input: #F8EDD3;
+  --input: #f8edd3;
   --input-background: #ffffff;
   --switch-background: #cbced4;
   --font-weight-medium: 600;
@@ -46,24 +46,24 @@
 }
 
 .dark {
-  --background: #7DD3C0;
+  --background: #79e9eb;
   --foreground: #1a1a1a;
-  --card: #F8EDD3;
+  --card: #f8edd3;
   --card-foreground: #1a1a1a;
-  --popover: #F8EDD3;
+  --popover: #f8edd3;
   --popover-foreground: #1a1a1a;
   --primary: #1a1a1a;
-  --primary-foreground: #F8EDD3;
-  --secondary: #FFB5C2;
+  --primary-foreground: #f8edd3;
+  --secondary: #ffb5c2;
   --secondary-foreground: #1a1a1a;
-  --muted: #D4A5A5;
+  --muted: #d4a5a5;
   --muted-foreground: #4a4a4a;
-  --accent: #FFA07A;
+  --accent: #ffa07a;
   --accent-foreground: #1a1a1a;
-  --destructive: #FF6B6B;
+  --destructive: #ff6b6b;
   --destructive-foreground: #ffffff;
   --border: #1a1a1a;
-  --input: #F8EDD3;
+  --input: #f8edd3;
   --ring: #1a1a1a;
   --font-weight-medium: 600;
   --font-weight-normal: 400;
@@ -132,7 +132,12 @@
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-bangers), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+      var(--font-bangers),
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
   }
 }
 
@@ -140,7 +145,7 @@
  * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
  */
 @layer base {
-  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
     h1 {
       font-size: var(--text-2xl);
       font-weight: var(--font-weight-medium);
