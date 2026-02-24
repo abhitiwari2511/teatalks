@@ -1,15 +1,15 @@
-import { Comment } from "@/types/types";
 import {
   createComment,
   deleteComment,
   getCommentsForPost as fetchCommentsForPost,
 } from "../lib/api/comments";
+import { Comment } from "@/types/types";
 
 export const useComments = () => {
   const createPostComment = async (postId: string, content: string) => {
     try {
       const response = await createComment({ postId, content });
-      const data = response.data as { data: any };
+      const data = response.data as { data: string };
       return data.data;
     } catch (error) {
       console.log("Error while creating the comment", error);
@@ -29,7 +29,7 @@ export const useComments = () => {
   const getCommentsForPost = async (postId: string) => {
     try {
       const response = await fetchCommentsForPost(postId);
-      return response.data as any;
+      return response.data as { data: Comment[] };
     } catch (error) {
       console.log("Error while fetching comments for the post", error);
       throw error;

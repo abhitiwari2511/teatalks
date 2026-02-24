@@ -9,6 +9,7 @@ import {
   resendOTP,
   getUserProfile,
   updateBio,
+  forgotPassword,
   resetPassword,
 } from "@/lib/api/auth";
 import {
@@ -174,7 +175,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const forgotPassword = async (email: string) => {
+  const forgotUserPassword = async (email: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -183,6 +184,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const errorMessage =
         "Failed to send forgot password email: " + (error as Error)?.message ||
         "Unknown error";
+      setError(errorMessage);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -221,7 +224,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     verifyOTP: verifyUserOTP,
     resendOTP: resendUserOTP,
     getCurrentUser,
-    forgotPassword: forgotPassword,
+    forgotPassword: forgotUserPassword,
     resetPassword: resetUserPassword,
     logout: logoutUser,
     getUserProfile: userProfile,
