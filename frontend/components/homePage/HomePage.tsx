@@ -28,7 +28,7 @@ export default function HomePage() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [fetchPosts]);
 
   return (
     <div className="min-h-screen mx-auto bg-background dark">

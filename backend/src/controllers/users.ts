@@ -243,11 +243,12 @@ const loginUser = asyncHandler(async (req, res) => {
     "-password -refreshToken",
   );
 
+  const isProduction = process.env.NODE_ENV === "production";
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none" as const,
-    domain: ".teatalks.in",
+    secure: isProduction,
+    sameSite: isProduction ? "none" as const : "lax" as const,
+    ...(isProduction && { domain: ".teatalks.in" }),
   };
 
   return res
@@ -280,11 +281,12 @@ const logoutUser = asyncHandler(async (req, res) => {
     { new: true },
   );
 
+  const isProduction = process.env.NODE_ENV === "production";
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none" as const,
-    domain: ".teatalks.in",
+    secure: isProduction,
+    sameSite: isProduction ? "none" as const : "lax" as const,
+    ...(isProduction && { domain: ".teatalks.in" }),
   };
 
   return res
@@ -338,11 +340,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       });
     }
 
+    const isProduction = process.env.NODE_ENV === "production";
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none" as const,
-      domain: ".teatalks.in",
+      secure: isProduction,
+      sameSite: isProduction ? "none" as const : "lax" as const,
+      ...(isProduction && { domain: ".teatalks.in" }),
     };
 
     const { accessToken, refreshToken } = await generateTokens(
