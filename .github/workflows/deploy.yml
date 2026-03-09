@@ -45,6 +45,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            nvm use default
             cd /home/abhit2511/teatalks/backend
             npm ci --omit=dev
             pm2 reload ecosystem.config.js
