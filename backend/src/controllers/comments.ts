@@ -95,4 +95,33 @@ const deleteComment = asyncHandler(async (req, res) => {
     .status(200)
     .json({ success: true, message: "Comment deleted successfully" });
 });
-export { createComment, getCommentsForPost, deleteComment };
+
+const replyToComment = asyncHandler(async (req, res) => {
+  const content = req.body;
+  const { commentId } = req.params;
+  const userId = req.user?._id;
+
+  const parentComment = await Comment.findById(commentId);
+  if (!parentComment) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Parent comment not found" });
+  }
+
+  if (parentComment.depth >= 1) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Maximum reply depth reached" });
+  }
+
+  const newComment = await Comment.create({
+    authorId: userId,
+    postId: parentComment.postId,
+    parentCommentId: commentId,
+    depth: parentComment.depth + 1,
+  }).populate("authorId", "_id userName");
+
+  return res.status(201).json({ success: true, data: newComment });
+});
+
+export { createComment, getCommentsForPost, deleteComment, replyToComment };

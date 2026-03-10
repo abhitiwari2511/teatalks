@@ -53,6 +53,8 @@ export interface commentType {
     like: number;
     love: number;
   };
+  parentCommentId: Types.ObjectId | null;
+  depth : number
 }
 
 export interface reactionType {

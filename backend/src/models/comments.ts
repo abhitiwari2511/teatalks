@@ -25,6 +25,15 @@ const commentSchema = new Schema<commentType>(
         default: 0,
       },
     },
+    parentCommentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+      default: null
+    },
+    depth: {
+      type: Number,
+      default: 0,
+    }
   },
   {
     timestamps: true,
