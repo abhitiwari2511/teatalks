@@ -85,6 +85,9 @@ export interface Comment {
   postId: string;
   content: string;
   authorId: string | PostAuthor;
+  parentCommentId?: string | null;
+  depth?: number;
+  replies?: Comment[];
   reactionCount?: {
     like: number;
     love: number;

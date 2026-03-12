@@ -2,6 +2,7 @@ import {
   createComment,
   deleteComment,
   getCommentsForPost as fetchCommentsForPost,
+  replyToComment,
 } from "../lib/api/comments";
 import { Comment } from "@/types/types";
 
@@ -36,9 +37,20 @@ export const useComments = () => {
     }
   };
 
+  const replyComment = async (commentId: string, content: string) => {
+    try {
+      const response = await replyToComment({ commentId, content });
+      return response.data as { data: Comment };
+    } catch (error) {
+      console.log("Error while replying to the comment", error);
+      throw error;
+    }
+  }
+
   return {
     createPostComment,
     deletePostComment,
     getCommentsForPost,
+    replyComment,
   };
 };

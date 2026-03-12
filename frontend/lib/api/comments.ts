@@ -5,3 +5,5 @@ export const createComment = ({postId, content}: { postId: string, content: stri
 export const getCommentsForPost = (postId: string) => client.get(`/posts/${postId}/comments`);
 
 export const deleteComment = (commentId: string) => client.delete(`/comments/${commentId}`);
+
+export const replyToComment = ({ commentId, content }: { commentId: string, content: string }) => client.post(`/comments/${commentId}/reply`, { content });

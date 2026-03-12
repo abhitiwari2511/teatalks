@@ -9,10 +9,10 @@ import {
 import { createComment, getCommentsForPost } from "../controllers/comments.js";
 import { toggleReaction, getReactions } from "../controllers/reactions.js";
 import { createPostSchema, updatePostSchema } from "../utils/postSchema.js";
-import { createCommentSchema } from "../utils/commentsSchema.js";
 import { reactionSchema } from "../utils/reactionsSchema.js";
 import { validate } from "../middlewares/validate.js";
 import { verifyJWT } from "../middlewares/auth.js";
+import { commentSchema } from "../utils/commentsSchema.js";
 
 const postRouter = Router();
 
@@ -31,7 +31,7 @@ postRouter.route("/:postId").delete(verifyJWT, deletePost);
 postRouter.route("/:postId/comments").get(getCommentsForPost);
 postRouter
   .route("/:postId/comments")
-  .post(verifyJWT, validate(createCommentSchema), createComment);
+  .post(verifyJWT, validate(commentSchema), createComment);
 
 // Reaction routes for posts
 postRouter

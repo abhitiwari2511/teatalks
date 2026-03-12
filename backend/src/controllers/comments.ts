@@ -58,7 +58,22 @@ const getCommentsForPost = asyncHandler(async (req, res) => {
     .populate("authorId", "_id userName")
     .sort({ createdAt: -1 });
 
-  return res.status(200).json({ success: true, data: comments });
+    const topLevelComments = comments.filter((c) => c.depth === 0);
+    const replies = comments.filter((c) => c.depth === 1);
+
+     const replyMap = new Map<string, typeof replies>();
+  for (const reply of replies) {
+    const parentId = reply.parentCommentId!.toString();
+    if (!replyMap.has(parentId)) replyMap.set(parentId, []);
+    replyMap.get(parentId)!.push(reply);
+  }
+
+    const commentTree = topLevelComments.map(comment => ({
+    ...comment.toObject(),
+    replies: replyMap.get(comment._id.toString()) ?? [],
+  }));
+
+  return res.status(200).json({ success: true, data: commentTree });
 });
 
 const deleteComment = asyncHandler(async (req, res) => {
@@ -84,10 +99,12 @@ const deleteComment = asyncHandler(async (req, res) => {
   }
 
   await Comment.findByIdAndDelete(commentId);
+  const deletedReplies = await Comment.deleteMany({ parentCommentId: commentId as string });
+
   const post = await Post.findById(comments.postId);
   if (post) {
     await Post.findByIdAndUpdate(comments.postId, {
-      commentCount: Math.max(0, (post.commentCount || 0) - 1),
+      $inc: { commentCount: -(1 + deletedReplies.deletedCount) }
     });
   }
 
@@ -100,6 +117,10 @@ const replyToComment = asyncHandler(async (req, res) => {
   const content = req.body;
   const { commentId } = req.params;
   const userId = req.user?._id;
+
+  if (!userId) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
 
   const parentComment = await Comment.findById(commentId);
   if (!parentComment) {
@@ -115,11 +136,12 @@ const replyToComment = asyncHandler(async (req, res) => {
   }
 
   const newComment = await Comment.create({
+    content,
     authorId: userId,
     postId: parentComment.postId,
-    parentCommentId: commentId,
+    parentCommentId: commentId as string,
     depth: parentComment.depth + 1,
-  }).populate("authorId", "_id userName");
+  });
 
   return res.status(201).json({ success: true, data: newComment });
 });

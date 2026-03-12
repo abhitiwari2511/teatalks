@@ -5,8 +5,8 @@ const contentSchema = z
   .min(1, "Comment content cannot be empty")
   .max(500, "Comment content too long");
 
-export const createCommentSchema = z.object({
+export const commentSchema = z.object({
   content: contentSchema,
 });
 
-export type CreateCommentPayload = z.infer<typeof createCommentSchema>;
+export type CreateCommentPayload = z.infer<typeof commentSchema>;
