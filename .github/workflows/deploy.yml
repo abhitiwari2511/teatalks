@@ -50,4 +50,4 @@ jobs:
             nvm use default
             cd /home/abhit2511/teatalks/backend
             npm ci --omit=dev
-            pm2 reload ecosystem.config.js
+            pm2 reload ecosystem.config.cjs

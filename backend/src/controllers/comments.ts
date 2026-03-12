@@ -58,17 +58,17 @@ const getCommentsForPost = asyncHandler(async (req, res) => {
     .populate("authorId", "_id userName")
     .sort({ createdAt: -1 });
 
-    const topLevelComments = comments.filter((c) => c.depth === 0);
-    const replies = comments.filter((c) => c.depth === 1);
+  const topLevelComments = comments.filter((c) => c.depth === 0);
+  const replies = comments.filter((c) => c.depth === 1);
 
-     const replyMap = new Map<string, typeof replies>();
+  const replyMap = new Map<string, typeof replies>();
   for (const reply of replies) {
     const parentId = reply.parentCommentId!.toString();
     if (!replyMap.has(parentId)) replyMap.set(parentId, []);
     replyMap.get(parentId)!.push(reply);
   }
 
-    const commentTree = topLevelComments.map(comment => ({
+  const commentTree = topLevelComments.map((comment) => ({
     ...comment.toObject(),
     replies: replyMap.get(comment._id.toString()) ?? [],
   }));
@@ -99,12 +99,14 @@ const deleteComment = asyncHandler(async (req, res) => {
   }
 
   await Comment.findByIdAndDelete(commentId);
-  const deletedReplies = await Comment.deleteMany({ parentCommentId: commentId as string });
+  const deletedReplies = await Comment.deleteMany({
+    parentCommentId: commentId as string,
+  });
 
   const post = await Post.findById(comments.postId);
   if (post) {
     await Post.findByIdAndUpdate(comments.postId, {
-      $inc: { commentCount: -(1 + deletedReplies.deletedCount) }
+      $inc: { commentCount: -(1 + deletedReplies.deletedCount) },
     });
   }
 
@@ -114,7 +116,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 });
 
 const replyToComment = asyncHandler(async (req, res) => {
-  const content = req.body;
+  const { content } = req.body;
   const { commentId } = req.params;
   const userId = req.user?._id;
 

@@ -45,12 +45,19 @@ const UserPost = () => {
     userReaction,
     userCommentReactions,
     localReactionCount,
+    replyingToId,
+    replyText,
+    isReplySubmitting,
     setCommentText,
+    setReplyText,
     handleReactionClick,
     handleCommentReactionClick,
     handleSubmitComment,
     handleDeleteComment,
     handleDeletePost,
+    handleStartReply,
+    handleCancelReply,
+    handleSubmitReply,
   } = usePostPage(postId, user?._id);
 
   if (loading || authLoading) {
@@ -132,10 +139,17 @@ const UserPost = () => {
                 userId={user?._id}
                 commentReactionEmojis={commentReactionEmojis}
                 userCommentReactions={userCommentReactions}
+                replyingToId={replyingToId}
+                replyText={replyText}
+                isReplySubmitting={isReplySubmitting}
                 onCommentTextChange={setCommentText}
                 onSubmitComment={handleSubmitComment}
                 onDeleteComment={handleDeleteComment}
                 onCommentReactionClick={handleCommentReactionClick}
+                onReplyTextChange={setReplyText}
+                onStartReply={handleStartReply}
+                onCancelReply={handleCancelReply}
+                onSubmitReply={handleSubmitReply}
                 formatDate={formatDate}
               />
             </motion.div>

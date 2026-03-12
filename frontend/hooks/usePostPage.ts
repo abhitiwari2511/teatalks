@@ -3,6 +3,7 @@ import { Post, Comment } from "@/types/types";
 import { useReactions } from "./useReactions";
 import { useComments } from "./useComments";
 import { usePosts } from "./usePosts";
+import { useCallback } from "react";
 
 type ReactionType = "like" | "love" | "funny" | "angry";
 
@@ -16,6 +17,9 @@ export function usePostPage(postId: string, userId?: string) {
   const [userCommentReactions, setUserCommentReactions] = useState<
     Record<string, string | null>
   >({});
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [isReplySubmitting, setIsReplySubmitting] = useState(false);
   const [localReactionCount, setLocalReactionCount] = useState({
     like: 0,
     love: 0,
@@ -29,8 +33,12 @@ export function usePostPage(postId: string, userId?: string) {
     getPostReactions,
     getCommentReactions,
   } = useReactions();
-  const { createPostComment, deletePostComment, getCommentsForPost } =
-    useComments();
+  const {
+    createPostComment,
+    deletePostComment,
+    getCommentsForPost,
+    replyComment,
+  } = useComments();
   const { fetchPostById, currentPost, deleteUserPost } = usePosts();
 
   useEffect(() => {
@@ -238,11 +246,16 @@ export function usePostPage(postId: string, userId?: string) {
 
     setIsSubmitting(true);
     try {
-      await createPostComment(post._id, commentText);
-      // Reload to show the new comment with fresh data
-      window.location.reload();
+      const newComment = await createPostComment(post._id, commentText);
+      const commentWithReplies = {
+        ...(newComment as unknown as Comment),
+        replies: [],
+      };
+      setComments((prev) => [commentWithReplies, ...prev]);
+      setCommentText("");
     } catch (error) {
       console.error("Failed to create comment:", error);
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -250,10 +263,50 @@ export function usePostPage(postId: string, userId?: string) {
   const handleDeleteComment = async (commentId: string) => {
     try {
       await deletePostComment(commentId);
-      // Reload to show updated comments
-      window.location.reload();
+      setComments((prev) => {
+        const isTopLevel = prev.some((c) => c._id === commentId);
+        if (isTopLevel) {
+          return prev.filter((c) => c._id !== commentId);
+        }
+        return prev.map((c) => ({
+          ...c,
+          replies: (c.replies || []).filter((r) => r._id !== commentId),
+        }));
+      });
     } catch (error) {
       console.error("Failed to delete comment:", error);
+    }
+  };
+
+  const handleStartReply = useCallback((commentId: string) => {
+    setReplyingToId(commentId);
+    setReplyText("");
+  }, []);
+
+  const handleCancelReply = useCallback(() => {
+    setReplyingToId(null);
+    setReplyText("");
+  }, []);
+
+  const handleSubmitReply = async (commentId: string) => {
+    if (!replyText.trim()) return;
+    setIsReplySubmitting(true);
+    try {
+      const response = await replyComment(commentId, replyText.trim());
+      const newReply = response.data as Comment;
+      setComments((prev) =>
+        prev.map((c) =>
+          c._id === commentId
+            ? { ...c, replies: [...(c.replies || []), newReply] }
+            : c,
+        ),
+      );
+      setReplyingToId(null);
+      setReplyText("");
+    } catch (error) {
+      console.error("Failed to submit reply:", error);
+    } finally {
+      setIsReplySubmitting(false);
     }
   };
 
@@ -276,11 +329,18 @@ export function usePostPage(postId: string, userId?: string) {
     userReaction,
     userCommentReactions,
     localReactionCount,
+    replyingToId,
+    replyText,
+    isReplySubmitting,
     setCommentText,
+    setReplyText,
     handleReactionClick,
     handleCommentReactionClick,
     handleSubmitComment,
     handleDeleteComment,
     handleDeletePost,
+    handleStartReply,
+    handleCancelReply,
+    handleSubmitReply,
   };
 }

@@ -76,7 +76,11 @@ export interface AuthContextType {
   logout: () => void;
   updateBio: (bio: string) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
-  resetPassword: (data: { email: string; otp: string; newPassword: string }) => Promise<void>;
+  resetPassword: (data: {
+    email: string;
+    otp: string;
+    newPassword: string;
+  }) => Promise<void>;
   getUserProfile: (username: string) => Promise<UserProfileData | undefined>;
 }
 
@@ -132,6 +136,9 @@ export interface CommentsCardProps {
   userId: string | undefined;
   commentReactionEmojis: Record<string, string>;
   userCommentReactions: Record<string, string | null>; // commentId -> reactionType
+  replyingToId: string | null;
+  replyText: string;
+  isReplySubmitting: boolean;
   onCommentTextChange: (text: string) => void;
   onSubmitComment: () => void;
   onDeleteComment: (commentId: string) => void;
@@ -139,6 +146,10 @@ export interface CommentsCardProps {
     commentId: string,
     reactionType: "like" | "love",
   ) => void;
+  onReplyTextChange: (text: string) => void;
+  onStartReply: (commentId: string) => void;
+  onCancelReply: () => void;
+  onSubmitReply: (commentId: string) => void;
   formatDate: (date: string) => string;
 }
 
